@@ -1,0 +1,12 @@
+export const LOAD_MORE_SUCCESS = "LOAD_MORE_SUCCESS";
+export const LIKE_RECIPE = "LIKE_RECIPE";
+export const UNLIKE_RECIPE = "UNLIKE_RECIPE";
+export const ADD_FAVORITE = "ADD_FAVORITE";
+export const REMOVE_FAVORITE = "REMOVE_FAVORITE";
+export const ADD_COMMENT = "ADD_COMMENT";
+export const ROLLBACK_COMMENT = "ROLLBACK_COMMENT";
+export const ADD_TO_DAY = "ADD_TO_DAY";
+export const REMOVE_FROM_DAY = "REMOVE_FROM_DAY";
+export const CLEAR_DAY = "CLEAR_DAY";
+export const CLEAR_WEEK = "CLEAR_WEEK";
+export const LOAD_FROM_STORAGE = "LOAD_FROM_STORAGE";
