@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { 
   StyleSheet, 
   Text, 
@@ -7,113 +7,78 @@ import {
   TouchableOpacity, 
   Image, 
   SafeAreaView,
-  ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform
+  Dimensions
 } from 'react-native';
-// src/context klasörünün yerini tam bulması için iki adım geriye (../) çıkıyoruz
-import { AuthContext } from '../context/AuthContext';
+
+const { width } = Dimensions.get('window');
 
 export default function LoginScreen() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  
-  // AuthContext henüz boş olsa bile kodun kırılmaması için güvenli kontrol ekledik
-  const auth = useContext(AuthContext);
-  const login = auth?.login;
-  const loading = auth?.loading || false;
 
-  const handleLogin = async () => {
-    if (!username || !password) {
-      setErrorMessage('Lütfen kullanıcı adı ve şifre girin.');
+  const handleLogin = () => {
+    if (username.trim() === '' || password.trim() === '') {
+      alert('Lütfen tüm alanları doldurun kanka!');
       return;
     }
-
-    if (login) {
-      try {
-        setErrorMessage('');
-        await login(username, password);
-        console.log('Giriş başarılı kanka!');
-      } catch (error) {
-        setErrorMessage(error.message || 'Bir hata oluştu.');
-      }
-    } else {
-      // Eğer İrem henüz context içini doldurmadıysa test için direkt giriş yaptırsın
-      if (username === 'emilys' && password === 'emilyspass') {
-        console.log('Test Girişi Başarılı!');
-      } else {
-        setErrorMessage('Kullanıcı adı veya şifre hatalı!');
-      }
-    }
+    alert(`Giriş Başarılı! Hoş geldin, ${username}!`);
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView 
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.innerContainer}
-      >
-        {/* Üst Kısım: Logo ve Başlıklar */}
-        <View style={styles.headerSection}>
+      <View style={styles.content}>
+        
+        {/* Şef Şapkası Logosu */}
+        <View style={styles.logoContainer}>
           <Image 
-            // src/screens içinden assets/images klasörüne tam erişim yolu kanka
-            source={require('../../assets/images/logo.png')} 
+            source={require('../../assets/images/icon.png')} 
             style={styles.logo}
             resizeMode="contain"
           />
-          <Text style={styles.title}>Lezzetli Tarifler</Text>
-          <Text style={styles.subtitle}>keşfet , pişir , paylaş</Text>
         </View>
+        
+        {/* Başlıklar */}
+        <Text style={styles.title}>Lezzetli Tarifler</Text>
+        <Text style={styles.subtitle}>keşfet, pişir, paylaş</Text>
 
-        {/* Orta Kısım: Form Alanları */}
-        <View style={styles.formSection}>
-          <Text style={styles.inputLabel}>Kullanıcı Adı</Text>
+        {/* Input Alanları */}
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Kullanıcı Adı</Text>
           <TextInput 
             style={styles.input}
-            placeholder="Kullanıcı adınızı girin"
-            placeholderTextColor="#9E9E9E"
             value={username}
             onChangeText={setUsername}
+            placeholder="Kullanıcı adınızı girin"
+            placeholderTextColor="#999"
             autoCapitalize="none"
           />
+        </View>
 
-          <Text style={styles.inputLabel}>Şifre</Text>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Şifre</Text>
           <TextInput 
             style={styles.input}
-            placeholder="Şifrenizi girin"
-            placeholderTextColor="#9E9E9E"
-            secureTextEntry={true}
             value={password}
             onChangeText={setPassword}
+            placeholder="Şifrenizi girin"
+            placeholderTextColor="#999"
+            secureTextEntry
             autoCapitalize="none"
           />
-
-          {errorMessage ? (
-            <Text style={styles.errorText}>⚠️ {errorMessage}</Text>
-          ) : null}
-
-          {/* Giriş Yap Butonu */}
-          <TouchableOpacity 
-            style={styles.button} 
-            onPress={handleLogin}
-            disabled={loading}
-          >
-            {loading ? (
-              <ActivityIndicator color="#FFFFFF" />
-            ) : (
-              <Text style={styles.buttonText}>Giriş Yap</Text>
-            )}
-          </TouchableOpacity>
-
-          {/* Alt Link */}
-          <TouchableOpacity style={styles.registerLink}>
-            <Text style={styles.registerText}>
-              Hesabınız yok mu? <Text style={styles.registerTextBold}>Kayıt Olun</Text>
-            </Text>
-          </TouchableOpacity>
         </View>
-      </KeyboardAvoidingView>
+
+        {/* Giriş Butonu */}
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={styles.buttonText}>Giriş Yap</Text>
+        </TouchableOpacity>
+
+        {/* Kayıt Ol Linki */}
+        <TouchableOpacity style={styles.registerLink}>
+          <Text style={styles.registerText}>
+            Hesabınız yok mu? <Text style={styles.registerHighlight}>Kayıt Ol</Text>
+          </Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
@@ -121,81 +86,95 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAFAFA',
+    backgroundColor: '#FAFAFA', // Figma'daki o tatlı krem/beyaz arka plan
   },
-  innerContainer: {
+  content: {
     flex: 1,
     justifyContent: 'center',
     paddingHorizontal: 30,
-  },
-  headerSection: {
     alignItems: 'center',
-    marginBottom: 40,
   },
-  logo: {
-    width: 120,
-    height: 120,
+  logoContainer: {
+    width: 130,
+    height: 130,
+    justifyContent: 'center',
+    alignItems: 'center',
     marginBottom: 15,
   },
+  logo: {
+    width: '100%',
+    height: '100%',
+  },
   title: {
-    fontSize: 32,
+    fontSize: 30,
     fontWeight: 'bold',
-    color: '#000000',
+    color: '#2C3E50',
+    marginBottom: 5,
     textAlign: 'center',
   },
   subtitle: {
     fontSize: 16,
-    color: '#666666',
-    marginTop: 5,
+    color: '#7F8C8D',
+    marginBottom: 35,
     textAlign: 'center',
   },
-  formSection: {
+  inputContainer: {
     width: '100%',
-  },
-  inputLabel: {
-    fontSize: 14,
-    color: '#333333',
-    marginBottom: 8,
-    fontWeight: '500',
-  },
-  input: {
-    backgroundColor: '#EEEEEE',
-    height: 55,
-    borderRadius: 12,
-    paddingHorizontal: 15,
-    fontSize: 16,
-    color: '#000000',
     marginBottom: 20,
   },
-  errorText: {
-    color: '#E53935',
+  label: {
     fontSize: 14,
-    marginBottom: 15,
-    textAlign: 'center',
-    fontWeight: '500',
+    fontWeight: '600',
+    color: '#34495E',
+    marginBottom: 8,
+    alignSelf: 'flex-start',
+  },
+  input: {
+    width: '100%',
+    height: 55,
+    backgroundColor: '#FFF',
+    borderRadius: 12,
+    paddingHorizontal: 15,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    fontSize: 16,
+    color: '#333',
+    // Hafif gölge efekti (Figma'daki gibi temiz dursun diye)
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
   },
   button: {
-    backgroundColor: '#E64A19',
+    width: '100%',
     height: 55,
-    borderRadius: 15,
+    backgroundColor: '#E64A19', // O meşhur iştah açıcı Figma turuncusu
+    borderRadius: 28,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 15,
+    // Buton gölgesi
+    shadowColor: '#E64A19',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 4,
   },
   buttonText: {
-    color: '#FFFFFF',
+    color: '#FFF',
     fontSize: 18,
     fontWeight: 'bold',
   },
   registerLink: {
-    marginTop: 20,
-    alignItems: 'center',
+    marginTop: 25,
+    padding: 10,
   },
   registerText: {
-    fontSize: 14,
-    color: '#666666',
+    fontSize: 15,
+    color: '#555',
   },
-  registerTextBold: {
+  registerHighlight: {
     color: '#E64A19',
     fontWeight: 'bold',
   },
