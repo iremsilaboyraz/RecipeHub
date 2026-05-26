@@ -9,7 +9,7 @@ Projede Context API, useReducer state yönetimi ve gelişmiş optimizasyon tekni
 
 ## 1️⃣ Repoyu Klonlayın
 
-
+```bash
 git clone https://github.com/iremsilaboyraz/RecipeHub.git
 cd RecipeHub
 2️⃣ Bağımlılıkları Yükleyin
@@ -70,5 +70,4 @@ Alışveriş listesi
 RecipeDetail
 Keşfet/Kategori ekranları
 Profil sayfası
-
 
