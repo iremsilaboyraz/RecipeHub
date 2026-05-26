@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { useTheme } from '../hooks/useTheme';
+import { useTheme } from '../context/ThemeContext';  // ← DEĞİŞTİ
 import SPACING from '../constants/spacing';
-
 /**
  * StepIndicator
  * Props:

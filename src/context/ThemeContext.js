@@ -124,4 +124,8 @@ export const ThemeProvider = ({ children }) => {
 // ─── Hook ─────────────────────────────────────────────────────────────────────
 export const useTheme = () => {
   const ctx = useContext(ThemeContext);
-  if (!ctx) throw n
+  if (!ctx) throw new Error('useTheme must be used inside <ThemeProvider>');
+  return ctx;
+};
+
+export default ThemeContext;

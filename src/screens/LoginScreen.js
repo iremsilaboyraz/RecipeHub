@@ -10,9 +10,10 @@ import {
   Platform,
   ScrollView,
   Alert,
+  Image,
 } from 'react-native';
-import useAuth from '../hooks/useAuth';
-import useTheme from '../hooks/useTheme';
+import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import COLORS from '../constants/colors';
 import SPACING from '../constants/spacing';
 
@@ -51,7 +52,11 @@ const LoginScreen = () => {
         {/* Brand */}
         <View style={s.brandBlock}>
           <View style={s.logoCircle}>
-            <Text style={s.logoEmoji}>👨‍🍳</Text>
+            <Image 
+              source={require('../../assets/chef-hat.png')} 
+              style={s.logoImage}
+              resizeMode="contain"
+            />
           </View>
           <Text style={s.appName}>Lezzetli Tarifler</Text>
           <Text style={s.tagline}>keşfet, pişir, paylaş</Text>
@@ -59,41 +64,33 @@ const LoginScreen = () => {
 
         {/* Form */}
         <View style={s.card}>
-          <Text style={s.cardTitle}>Giriş Yap</Text>
+          {/* Username - LABEL YOK, PLACEHOLDER İÇERDE */}
+          <TextInput
+            style={s.input}
+            placeholder="Kullanıcı Adı"
+            placeholderTextColor={theme.placeholder}
+            autoCapitalize="none"
+            autoCorrect={false}
+            value={username}
+            onChangeText={setUsername}
+            returnKeyType="next"
+          />
 
-          {/* Username */}
-          <View style={s.fieldGroup}>
-            <Text style={s.label}>Kullanıcı Adı</Text>
+          {/* Password - LABEL YOK, İKONLAR VAR */}
+          <View style={[s.input, s.passwordRow]}>
             <TextInput
-              style={s.input}
-              placeholder="emilys"
+              style={s.passwordInput}
+              placeholder="Şifre"
               placeholderTextColor={theme.placeholder}
-              autoCapitalize="none"
-              autoCorrect={false}
-              value={username}
-              onChangeText={setUsername}
-              returnKeyType="next"
+              secureTextEntry={!showPassword}
+              value={password}
+              onChangeText={setPassword}
+              returnKeyType="done"
+              onSubmitEditing={handleLogin}
             />
-          </View>
-
-          {/* Password */}
-          <View style={s.fieldGroup}>
-            <Text style={s.label}>Şifre</Text>
-            <View style={[s.input, s.passwordRow]}>
-              <TextInput
-                style={s.passwordInput}
-                placeholder="••••••••"
-                placeholderTextColor={theme.placeholder}
-                secureTextEntry={!showPassword}
-                value={password}
-                onChangeText={setPassword}
-                returnKeyType="done"
-                onSubmitEditing={handleLogin}
-              />
-              <TouchableOpacity onPress={() => setShowPassword((v) => !v)} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
-                <Text style={s.eyeIcon}>{showPassword ? '🙈' : '👁️'}</Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity onPress={() => setShowPassword((v) => !v)} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+              <Text style={s.eyeIcon}>{showPassword ? '🙈' : '👁️'}</Text>
+            </TouchableOpacity>
           </View>
 
           {/* Submit */}
@@ -111,11 +108,11 @@ const LoginScreen = () => {
           </TouchableOpacity>
 
           {/* Demo hint */}
-          <View style={s.hintBox}>
+          <TouchableOpacity style={s.hintBox}>
             <Text style={s.hintText}>
-              Demo: <Text style={s.hintBold}>emilys</Text> / <Text style={s.hintBold}>emilyspass</Text>
+              Hesabınız yok mu? <Text style={s.hintBold}>Kayıt Olun</Text>
             </Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -134,30 +131,33 @@ const makeStyles = (theme) =>
     // Brand
     brandBlock: { alignItems: 'center', marginBottom: SPACING.xl },
     logoCircle: {
-      width: 80,
-      height: 80,
-      borderRadius: 40,
-      backgroundColor: theme.primary,
+      width: 100,
+      height: 100,
+      borderRadius: 50,
+      backgroundColor: '#4CAF50',  // Yeşil arka plan (Figma'daki gibi)
       justifyContent: 'center',
       alignItems: 'center',
-      marginBottom: SPACING.sm,
-      shadowColor: theme.primary,
+      marginBottom: SPACING.md,
+      shadowColor: '#000',
       shadowOffset: { width: 0, height: 6 },
-      shadowOpacity: 0.35,
+      shadowOpacity: 0.2,
       shadowRadius: 10,
       elevation: 8,
     },
-    logoEmoji: { fontSize: 36 },
+    logoImage: {
+      width: 60,
+      height: 60,
+    },
     appName: {
-      fontSize: 32,
+      fontSize: 28,
       fontWeight: '800',
       color: theme.text,
       letterSpacing: 0.5,
     },
     tagline: {
-      fontSize: 14,
+      fontSize: 13,
       color: theme.textSecondary,
-      marginTop: SPACING.xs,
+      marginTop: 4,
     },
     // Card
     card: {
@@ -169,28 +169,14 @@ const makeStyles = (theme) =>
       shadowOpacity: 0.12,
       shadowRadius: 12,
       elevation: 4,
+      gap: SPACING.md,
     },
-    cardTitle: {
-      fontSize: 22,
-      fontWeight: '700',
-      color: theme.text,
-      marginBottom: SPACING.lg,
-    },
-    // Fields
-    fieldGroup: { marginBottom: SPACING.md },
-    label: {
-      fontSize: 13,
-      fontWeight: '600',
-      color: theme.textSecondary,
-      marginBottom: SPACING.xs,
-      textTransform: 'uppercase',
-      letterSpacing: 0.6,
-    },
+    // Input (LABEL YOK ARTIK)
     input: {
       backgroundColor: theme.inputBg,
       borderRadius: 12,
       paddingHorizontal: SPACING.md,
-      paddingVertical: Platform.OS === 'ios' ? SPACING.sm + 2 : SPACING.sm,
+      paddingVertical: Platform.OS === 'ios' ? 14 : 12,
       fontSize: 15,
       color: theme.text,
       borderWidth: 1.5,
@@ -205,17 +191,17 @@ const makeStyles = (theme) =>
       flex: 1,
       fontSize: 15,
       color: theme.text,
-      paddingVertical: Platform.OS === 'ios' ? SPACING.sm + 2 : SPACING.sm,
+      paddingVertical: Platform.OS === 'ios' ? 14 : 12,
     },
-    eyeIcon: { fontSize: 18, paddingRight: 4 },
+    eyeIcon: { fontSize: 20, paddingRight: 4 },
     // Button
     btn: {
-      backgroundColor: theme.primary,
+      backgroundColor: '#FF5722',  // Turuncu buton (Figma'daki gibi)
       borderRadius: 14,
-      paddingVertical: SPACING.md,
+      paddingVertical: 14,
       alignItems: 'center',
-      marginTop: SPACING.sm,
-      shadowColor: theme.primary,
+      marginTop: SPACING.xs,
+      shadowColor: '#FF5722',
       shadowOffset: { width: 0, height: 4 },
       shadowOpacity: 0.3,
       shadowRadius: 8,
@@ -225,14 +211,11 @@ const makeStyles = (theme) =>
     btnText: { color: '#FFFFFF', fontSize: 16, fontWeight: '700', letterSpacing: 0.4 },
     // Hint
     hintBox: {
-      marginTop: SPACING.md,
-      backgroundColor: theme.inputBg,
-      borderRadius: 10,
-      padding: SPACING.sm,
+      marginTop: SPACING.xs,
       alignItems: 'center',
     },
-    hintText: { fontSize: 12, color: theme.textSecondary },
-    hintBold: { fontWeight: '700', color: theme.primary },
+    hintText: { fontSize: 13, color: theme.textSecondary },
+    hintBold: { fontWeight: '700', color: '#FF5722' },
   });
 
 export default LoginScreen;

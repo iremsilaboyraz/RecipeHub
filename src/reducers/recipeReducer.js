@@ -53,4 +53,62 @@ const recipeReducer = (state, action) => {
         recipes: [...state.recipes, ...newRecipes],
         page: state.page + 1,
         hasMore: action.payload.length > 0,
-      }
+      };
+    }
+
+    // ── Like / Unlike ──────────────────────────────────────────────────────
+    case LIKE_RECIPE:
+      if (state.liked.includes(action.payload)) return state;
+      return { ...state, liked: [...state.liked, action.payload] };
+
+    case UNLIKE_RECIPE:
+      return { ...state, liked: state.liked.filter((id) => id !== action.payload) };
+
+    // ── Favorites ──────────────────────────────────────────────────────────
+    case ADD_FAVORITE:
+      if (state.favorites.includes(action.payload)) return state;
+      return { ...state, favorites: [...state.favorites, action.payload] };
+
+    case REMOVE_FAVORITE:
+      return {
+        ...state,
+        favorites: state.favorites.filter((id) => id !== action.payload),
+      };
+
+    // ── CRUD ───────────────────────────────────────────────────────────────
+    case ADD_RECIPE:
+      return { ...state, recipes: [action.payload, ...state.recipes] };
+
+    case UPDATE_RECIPE:
+      return {
+        ...state,
+        recipes: state.recipes.map((r) =>
+          r.id === action.payload.id ? { ...r, ...action.payload } : r
+        ),
+      };
+
+    case DELETE_RECIPE:
+      return {
+        ...state,
+        recipes: state.recipes.filter((r) => r.id !== action.payload),
+        favorites: state.favorites.filter((id) => id !== action.payload),
+        liked: state.liked.filter((id) => id !== action.payload),
+      };
+
+    case SET_SELECTED_RECIPE:
+      return { ...state, selectedRecipe: action.payload };
+
+    // ── AsyncStorage ───────────────────────────────────────────────────────
+    case RECIPE_LOAD_STORAGE:
+      return {
+        ...state,
+        favorites: action.payload.favorites ?? state.favorites,
+        liked: action.payload.liked ?? state.liked,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export default recipeReducer;

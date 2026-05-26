@@ -1,9 +1,8 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Text, View, Platform } from 'react-native';
-import useTheme from '../hooks/useTheme';
+import { useTheme } from '../context/ThemeContext';  // ← DEĞİŞTİ
 import SPACING from '../constants/spacing';
-
 // Screens
 import LoginScreen from '../screens/LoginScreen';
 import SettingsScreen from '../screens/SettingsScreen';
