@@ -9,7 +9,7 @@ Projede Context API, useReducer state yönetimi ve gelişmiş optimizasyon tekni
 
 ## 1️⃣ Repoyu Klonlayın
 
-```bash
+
 git clone https://github.com/iremsilaboyraz/RecipeHub.git
 cd RecipeHub
 2️⃣ Bağımlılıkları Yükleyin
@@ -19,11 +19,13 @@ npx expo start -c
 
 📱 Daha sonra Expo Go uygulaması ile QR kodu okutarak projeyi çalıştırabilirsiniz.
 
+
 🔐 Test Kullanıcı Bilgileri
 Kullanıcı Adı	Şifre
 emilys	emilyspass
-💾 AsyncStorage Yapısı
 
+
+💾 AsyncStorage Yapısı
 Projede kullanılan bazı AsyncStorage anahtarları:
 
 @auth_user_JSON
@@ -69,11 +71,4 @@ RecipeDetail
 Keşfet/Kategori ekranları
 Profil sayfası
 
-Knk senin şu anki görüntüde en büyük sorunlar:
-- Başlık boyutları karışık
-- Kod blokları düzgün kapanmamış
-- Liste yapıları yok
-- Her şey bitişik durmuş
-- ` ```bash ` kullanımı eksik bazı yerlerde
 
-Bunu direkt README.md’ye yapıştırırsan çok daha profesyonel görünür ✨
