@@ -154,6 +154,28 @@ const styles = StyleSheet.create({
         fontFamily: 'Inter',
         color: '#000',
     },
+    mealTypeContainer: {
+        flexDirection: 'row',
+        marginBottom: 15,
+    },
+    mealBadge: {
+        paddingVertical: 6,
+        paddingHorizontal: 16,
+        borderRadius: 20,
+        backgroundColor: '#EAEAEA',
+        marginRight: 10,
+    },
+    mealBadgeActive: {
+        backgroundColor: '#FF7700', // Turuncu
+    },
+    mealText: {
+        fontSize: 14,
+        color: '#555',
+        fontWeight: '500',
+    },
+    mealTextActive: {
+        color: '#FFF',
+    },
 
 
 
