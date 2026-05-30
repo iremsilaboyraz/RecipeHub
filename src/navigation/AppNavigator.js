@@ -116,11 +116,9 @@ const AppNavigator = () => {
         },
       })}
     >
-      <Tab.Screen name="Feed" component={FeedScreen} />
-      <Tab.Screen name="Explore" component={ExploreScreen} />
-      <Tab.Screen name="Create" component={CreateRecipeScreen} />
-      <Tab.Screen name="Planner" component={PlannerScreen} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
+        <Tab.Screen name="Feed" component={FeedStack} />
+        <Tab.Screen name="Explore" component={ExploreStack} />
+
     </Tab.Navigator>
   );
 };
