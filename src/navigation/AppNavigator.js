@@ -1,3 +1,4 @@
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Text, View, Platform } from 'react-native';
@@ -28,6 +29,7 @@ const TAB_LABELS = {
   Settings: 'Ayarlar',
 };
 
+const Stack = createNativeStackNavigator();
 // Placeholder screens for Person B & C
 const FeedScreen = () => <PlaceholderScreen title="Ana Sayfa (Feed)" />;
 const ExploreScreen = () => <PlaceholderScreen title="Keşfet (Explore)" />;
