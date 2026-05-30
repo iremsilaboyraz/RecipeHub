@@ -38,5 +38,9 @@ const styles = StyleSheet .create({
 badgeSelected: {
         backgroundColor:'#661313',
 },
-
+text:{
+        fontSize:14,
+    fontWeight:'500',
+    fontFamily:'Inter',
+},
 })
