@@ -35,5 +35,8 @@ const styles = StyleSheet .create({
     badgeUnselected: {
         backgroundColor:'#EAEAEA'
     },
+badgeSelected: {
+        backgroundColor:'#661313',
+},
 
 })
