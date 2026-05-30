@@ -49,6 +49,12 @@ const PlannerStack = () => (
         {/* İleride buraya ShoppingListScreen eklenecek */}
     </Stack.Navigator>
 );
+const ProfileStack = () => (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="SettingsMain" component={SettingsScreen} />
+        {/* İleride buraya ProfileScreen eklenecek */}
+    </Stack.Navigator>
+);
 
 // Placeholder screens for Person B & C
 const FeedScreen = () => <PlaceholderScreen title="Ana Sayfa (Feed)" />;
