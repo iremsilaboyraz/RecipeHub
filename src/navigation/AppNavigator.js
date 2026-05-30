@@ -7,6 +7,7 @@ import SPACING from '../constants/spacing';
 // Screens
 import LoginScreen from '../screens/LoginScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import ExploreScreen from '../screens/ExploreScreen';
 import CreateRecipeScreen from '../screens/CreateRecipeScreen';
 import PlaceholderScreen from '../components/PlaceholderScreen';
 
@@ -58,7 +59,6 @@ const ProfileStack = () => (
 
 // Placeholder screens for Person B & C
 const FeedScreen = () => <PlaceholderScreen title="Ana Sayfa (Feed)" />;
-const ExploreScreen = () => <PlaceholderScreen title="Keşfet (Explore)" />;
 const PlannerScreen = () => <PlaceholderScreen title="Haftalık Plan (Planner)" />;
 
 const AppNavigator = () => {
