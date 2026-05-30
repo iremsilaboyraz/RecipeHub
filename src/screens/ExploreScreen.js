@@ -70,6 +70,31 @@ const ExploreScreen = ({ navigation }) => {
                 <Text style={styles.headerTitle}>Keşfet</Text>
             </View>
 
+            {/* Meal Type Filtreleri (Yatay Kaydırma) */}
+            <View style={styles.mealTypeContainer}>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    {MEAL_TYPES.map((meal) => (
+                        <TouchableOpacity
+                            key={meal.value}
+                            style={[
+                                styles.mealBadge,
+                                selectedMealType === meal.value && styles.mealBadgeActive
+                            ]}
+                            onPress={() => handleMealTypeSelect(meal.value)}
+                        >
+                            <Text style={[
+                                styles.mealText,
+                                selectedMealType === meal.value && styles.mealTextActive
+                            ]}>
+                                {meal.label}
+                            </Text>
+                        </TouchableOpacity>
+                    ))}
+                </ScrollView>
+            </View>
+
+
+
         </View>
     );
 };
