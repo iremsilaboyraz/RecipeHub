@@ -108,6 +108,9 @@ const ExploreScreen = ({ navigation }) => {
                 />
             </View>
 
+            {/* Etiketler Bölümü */}
+            <Text style={styles.sectionTitle}>Etiketler</Text>
+
         </View>
     );
 };
