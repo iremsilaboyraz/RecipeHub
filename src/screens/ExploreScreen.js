@@ -59,3 +59,17 @@ const ExploreScreen = ({ navigation }) => {
             tag.toLowerCase().includes(searchQuery.toLowerCase())
         );
     }, [tags, searchQuery]);
+
+    return (
+        <View style={styles.container}>
+            {/* Header Alanı */}
+            <View style={styles.header}>
+                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+                    <Ionicons name="chevron-back" size={28} color="#000" />
+                </TouchableOpacity>
+                <Text style={styles.headerTitle}>Keşfet</Text>
+            </View>
+
+        </View>
+    );
+};
