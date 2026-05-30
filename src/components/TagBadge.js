@@ -43,4 +43,10 @@ text:{
     fontWeight:'500',
     fontFamily:'Inter',
 },
+textUnselected: {
+        backgroundColor:'#555555',
+},
+textSelected: {
+        backgroundColor:'#FFFFFF',
+},
 })
