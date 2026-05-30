@@ -203,7 +203,16 @@ const styles = StyleSheet.create({
         fontFamily: 'Inter',
         color: '#000',
     },
-
-
-
+    sectionTitle: {
+        fontSize: 20,
+        fontWeight: '600',
+        fontFamily: 'Inter',
+        color: '#000',
+        marginBottom: 15,
+    },
+    tagsWrapper: {
+        flexDirection: 'row',
+        flexWrap: 'wrap', // Tasarımdaki gibi etiketlerin alt satıra geçmesi için
+        paddingBottom: 20,
+    },
 });
