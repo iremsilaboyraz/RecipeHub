@@ -1,7 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
-
 const TagBadge = ({ tag, isSelected, onPress }) => {
     return (
         <TouchableOpacity
@@ -22,31 +21,34 @@ const TagBadge = ({ tag, isSelected, onPress }) => {
     );
 };
 
+// React.memo optimizasyonu zorunluluğu (Performans için)
 export default React.memo(TagBadge);
 
-const styles = StyleSheet .create({
+const styles = StyleSheet.create({
     badge: {
         paddingVertical: 8,
         paddingHorizontal: 16,
         borderRadius: 20,
         marginRight: 10,
         marginBottom: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     badgeUnselected: {
-        backgroundColor:'#EAEAEA'
+        backgroundColor: '#EAEAEA', // Sadece DIŞ KUTUNUN açık gri arka planı
     },
-badgeSelected: {
-        backgroundColor:'#661313',
-},
-text:{
-        fontSize:14,
-    fontWeight:'500',
-    fontFamily:'Inter',
-},
-textUnselected: {
-        backgroundColor:'#555555',
-},
-textSelected: {
-        backgroundColor:'#FFFFFF',
-},
+    badgeSelected: {
+        backgroundColor: '#661313', // Seçili dış kutunun koyu kırmızı arka planı
+    },
+    text: {
+        fontSize: 14,
+        fontWeight: '500',
+        backgroundColor: 'transparent', // YAZININ ARKASINDAKİ GRİ KUTUYU SİLEN KISIM
+    },
+    textUnselected: {
+        color: '#555555', // Yazının kendi rengi (Koyu Gri)
+    },
+    textSelected: {
+        color: '#FFFFFF', // Seçili yazının kendi rengi (Beyaz)
+    },
 });
