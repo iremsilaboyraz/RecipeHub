@@ -116,8 +116,7 @@ const ExploreScreen = ({ navigation }) => {
             ) : (
                 <ScrollView contentContainerStyle={styles.tagsWrapper}>
                     {filteredTags.map((tag) => (
-                        // Tasarımdaki gibi bazı etiketleri statik olarak seçili göstermek istersen
-                        // isSelected parametresine mantık ekleyebilirsin. Şu an hepsi varsayılan renkte başlar.
+
                         <TagBadge
                             key={tag}
                             tag={tag}
@@ -128,8 +127,8 @@ const ExploreScreen = ({ navigation }) => {
                 </ScrollView>
             )}
 
-
-
         </View>
     );
 };
+
+export default ExploreScreen;
