@@ -25,5 +25,15 @@ const TagBadge = ({ tag, isSelected, onPress }) => {
 export default React.memo(TagBadge);
 
 const styles = StyleSheet .create({
-    badge: {}
+    badge: {
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        borderRadius: 20,
+        marginRight: 10,
+        marginBottom: 10,
+    },
+    badgeUnselected: {
+        backgroundColor:'#EAEAEA'
+    },
+
 })
