@@ -21,3 +21,9 @@ const TagBadge = ({ tag, isSelected, onPress }) => {
         </TouchableOpacity>
     );
 };
+
+export default React.memo(TagBadge);
+
+const styles = StyleSheet .create({
+    badge: {}
+})
