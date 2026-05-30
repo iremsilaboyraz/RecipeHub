@@ -30,6 +30,16 @@ const TAB_LABELS = {
 };
 
 const Stack = createNativeStackNavigator();
+
+const FeedStack = () => (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="FeedMain" component={FeedScreen} />
+        {/* İleride Kişi C buraya RecipeDetailScreen ekleyecek */}
+    </Stack.Navigator>
+);
+
+
+
 // Placeholder screens for Person B & C
 const FeedScreen = () => <PlaceholderScreen title="Ana Sayfa (Feed)" />;
 const ExploreScreen = () => <PlaceholderScreen title="Keşfet (Explore)" />;
