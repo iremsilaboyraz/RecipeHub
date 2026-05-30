@@ -176,6 +176,33 @@ const styles = StyleSheet.create({
     mealTextActive: {
         color: '#FFF',
     },
+    divider: {
+        height: 1,
+        backgroundColor: '#FF7700', // Tasarımdaki turuncu ince çizgi
+        opacity: 0.5,
+        marginHorizontal: -20, // Kenarlara yapışması için
+        marginBottom: 20,
+    },
+    searchContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#FFF',
+        borderWidth: 1,
+        borderColor: '#E0E0E0',
+        borderRadius: 10, // Figma'daki border radius
+        paddingHorizontal: 15,
+        height: 45,
+        marginBottom: 25,
+    },
+    searchIcon: {
+        marginRight: 10,
+    },
+    searchInput: {
+        flex: 1,
+        fontSize: 16,
+        fontFamily: 'Inter',
+        color: '#000',
+    },
 
 
 
