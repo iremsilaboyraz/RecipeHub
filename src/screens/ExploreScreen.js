@@ -132,3 +132,29 @@ const ExploreScreen = ({ navigation }) => {
 };
 
 export default ExploreScreen;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#FAFAFA', // Tasarımdaki arka plan rengi
+        paddingTop: 50, // SafeArea boşluğu (iOS/Android çentiği için)
+        paddingHorizontal: 20,
+    },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    backButton: {
+        marginRight: 10,
+    },
+    headerTitle: {
+        fontSize: 24,
+        fontWeight: '600',
+        fontFamily: 'Inter',
+        color: '#000',
+    },
+
+
+
+});
