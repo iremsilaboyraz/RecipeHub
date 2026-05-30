@@ -49,4 +49,4 @@ textUnselected: {
 textSelected: {
         backgroundColor:'#FFFFFF',
 },
-})
+});
