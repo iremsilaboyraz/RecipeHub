@@ -40,3 +40,22 @@ const ExploreScreen = ({ navigation }) => {
         };
         fetchTags();
     }, []);
+
+
+    const handleMealTypeSelect = useCallback((type) => {
+        setSelectedMealType(type);
+
+    }, []);
+
+
+    const handleTagPress = useCallback((tag) => {
+        navigation.navigate('TagFeed', { tag }); // TagFeed ekranına yönlendirme
+    }, [navigation]);
+
+
+    const filteredTags = useMemo(() => {
+        if (!searchQuery.trim()) return tags;
+        return tags.filter(tag =>
+            tag.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    }, [tags, searchQuery]);
