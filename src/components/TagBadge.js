@@ -1,2 +1,23 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+
+
+const TagBadge = ({ tag, isSelected, onPress }) => {
+    return (
+        <TouchableOpacity
+            style={[
+                styles.badge,
+                isSelected ? styles.badgeSelected : styles.badgeUnselected
+            ]}
+            onPress={() => onPress(tag)}
+            activeOpacity={0.7}
+        >
+            <Text style={[
+                styles.text,
+                isSelected ? styles.textSelected : styles.textUnselected
+            ]}>
+                {tag}
+            </Text>
+        </TouchableOpacity>
+    );
+};
