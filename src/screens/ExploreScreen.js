@@ -93,7 +93,20 @@ const ExploreScreen = ({ navigation }) => {
                 </ScrollView>
             </View>
 
+            <View style={styles.divider} />
 
+
+            {/* Arama Çubuğu */}
+            <View style={styles.searchContainer}>
+                <Ionicons name="search-outline" size={20} color="#888" style={styles.searchIcon} />
+                <TextInput
+                    style={styles.searchInput}
+                    placeholder="Etiket Ara..."
+                    placeholderTextColor="#888"
+                    value={searchQuery}
+                    onChangeText={setSearchQuery}
+                />
+            </View>
 
         </View>
     );
