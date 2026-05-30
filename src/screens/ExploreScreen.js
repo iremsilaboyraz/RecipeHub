@@ -111,6 +111,25 @@ const ExploreScreen = ({ navigation }) => {
             {/* Etiketler Bölümü */}
             <Text style={styles.sectionTitle}>Etiketler</Text>
 
+            {isLoading ? (
+                <ActivityIndicator size="large" color="#FF7700" style={{ marginTop: 20 }} />
+            ) : (
+                <ScrollView contentContainerStyle={styles.tagsWrapper}>
+                    {filteredTags.map((tag) => (
+                        // Tasarımdaki gibi bazı etiketleri statik olarak seçili göstermek istersen
+                        // isSelected parametresine mantık ekleyebilirsin. Şu an hepsi varsayılan renkte başlar.
+                        <TagBadge
+                            key={tag}
+                            tag={tag}
+                            isSelected={tag === 'Salad' || tag === 'Hamur İşleri'} // Figma'daki görünümü simüle etmek için
+                            onPress={handleTagPress}
+                        />
+                    ))}
+                </ScrollView>
+            )}
+
+
+
         </View>
     );
 };
