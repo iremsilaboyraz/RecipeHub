@@ -19,3 +19,24 @@ const MEAL_TYPES = [
     { label: 'Atıştırmalık', value: 'snack' },
 ];
 
+const ExploreScreen = ({ navigation }) => {
+    const [tags, setTags] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedMealType, setSelectedMealType] = useState('all');
+    const [isLoading, setIsLoading] = useState(true);
+
+    // API'den tüm etiketleri çekme
+    useEffect(() => {
+        const fetchTags = async () => {
+            try {
+                const response = await fetch('https://dummyjson.com/recipes/tags');
+                const data = await response.json();
+                setTags(data);
+            } catch (error) {
+                console.error("Etiketler yüklenirken hata oluştu:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchTags();
+    }, []);
