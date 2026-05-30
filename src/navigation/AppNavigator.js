@@ -37,7 +37,12 @@ const FeedStack = () => (
         {/* İleride Kişi C buraya RecipeDetailScreen ekleyecek */}
     </Stack.Navigator>
 );
-
+const ExploreStack = () => (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="ExploreMain" component={ExploreScreen} />
+        {/* İleride buraya TagFeedScreen ve RecipeDetailScreen ekleyeceksin */}
+    </Stack.Navigator>
+);
 
 
 // Placeholder screens for Person B & C
