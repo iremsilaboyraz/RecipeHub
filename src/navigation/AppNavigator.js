@@ -44,7 +44,8 @@ const ExploreStack = () => (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="ExploreMain" component={ExploreScreen} />
         <Stack.Screen name="TagFeed" component={TagFeedScreen} />
-        {/* DETAY EKRANINI BURAYA KAYDEDİYORUZ */}
+
+        {/* İşte köprü burası! name="RecipeDetail" kısmı birebir eşleşmeli */}
         <Stack.Screen name="RecipeDetail" component={RecipeDetailScreen} />
     </Stack.Navigator>
 );
