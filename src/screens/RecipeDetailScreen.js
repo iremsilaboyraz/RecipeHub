@@ -166,3 +166,181 @@ const RecipeDetailScreen = ({ route, navigation }) => {
 };
 
 export default RecipeDetailScreen;
+
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#FAFAFA',
+    },
+    centerBox: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 16,
+        paddingTop: 50, // SafeArea
+        paddingBottom: 15,
+        backgroundColor: '#FAFAFA',
+    },
+    headerTitle: {
+        fontSize: 24,
+        fontFamily: 'Inter',
+        fontWeight: '600',
+        color: '#000',
+    },
+    headerIcon: {
+        padding: 5,
+    },
+    heroImage: {
+        width: '100%',
+        height: 268, // Figma'daki ölçü
+    },
+    contentContainer: {
+        paddingHorizontal: 16,
+        paddingTop: 20,
+        paddingBottom: 40,
+    },
+    title: {
+        fontSize: 32, // Figma: Inria Sans 32px
+        fontFamily: 'System', // Projede Inria Sans fontu yüklüyse buraya 'Inria Sans' yaz
+        fontWeight: 'bold',
+        color: '#000',
+    },
+    subtitle: {
+        fontSize: 16,
+        color: '#DA854D', // Figma'daki renk
+        marginBottom: 20,
+    },
+    statsBox: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: 12,
+        padding: 15,
+        borderWidth: 1,
+        borderColor: '#00000020', // %20 opak siyah kenarlık (Figma'daki opacity görünümü)
+        marginBottom: 25,
+    },
+    statsRowTop: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    statItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    statTextColumn: {
+        marginLeft: 8,
+    },
+    statLabel: {
+        fontSize: 12,
+        color: '#888',
+        fontFamily: 'Inter',
+    },
+    statValue: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        fontFamily: 'Inter',
+        color: '#000',
+    },
+    divider: {
+        height: 1,
+        backgroundColor: '#00000020',
+        marginVertical: 15,
+        borderStyle: 'dashed', // Kesik çizgi tasarımı için
+    },
+    statsRowBottom: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    actionButtonsRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 25,
+    },
+    actionBtn: {
+        width: 170, // Figma: 170x46
+        height: 46,
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+    },
+    likeBtn: {
+        backgroundColor: '#EAEAEA',
+    },
+    likeBtnActive: {
+        backgroundColor: '#000',
+    },
+    likeBtnText: {
+        fontSize: 16,
+        fontFamily: 'Inter',
+        fontWeight: '500',
+        color: '#000',
+    },
+    likeBtnTextActive: {
+        color: '#FFF',
+    },
+    planBtn: {
+        backgroundColor: '#DA854D',
+    },
+    planBtnText: {
+        fontSize: 16,
+        fontFamily: 'Inter',
+        fontWeight: '500',
+        color: '#FFF',
+        marginLeft: 5,
+    },
+    ingredientsBox: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: 12,
+        padding: 20,
+        borderWidth: 1,
+        borderColor: '#00000020',
+    },
+    sectionTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        fontFamily: 'Inter',
+        marginBottom: 15,
+        color: '#000',
+    },
+    ingredientRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 15,
+    },
+    bulletPoint: {
+        width: 8,
+        height: 8,
+        borderRadius: 4,
+        backgroundColor: '#B65311', // Figma'daki yuvarlak im rengi
+        marginRight: 15,
+    },
+    ingredientText: {
+        fontSize: 16,
+        fontFamily: 'Inter',
+        color: '#333',
+    },
+    instructionRow: {
+        flexDirection: 'row',
+        marginBottom: 15,
+        paddingRight: 15,
+    },
+    instructionNumber: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#DA854D',
+        marginRight: 10,
+        width: 20,
+    },
+    instructionText: {
+        fontSize: 15,
+        fontFamily: 'Inter',
+        color: '#333',
+        lineHeight: 22,
+    }
+});
