@@ -23,3 +23,32 @@ const TagFeedScreen = ({ navigation, route }) => {
         </View>
     );
 };
+
+export default TagFeedScreen;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#FAFAFA',
+        paddingTop: 50,
+    },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        marginBottom: 20,
+    },
+    backButton: {
+        marginRight: 10,
+    },
+    headerTitle: {
+        fontSize: 24,
+        fontWeight: '600',
+        color: '#000',
+    },
+    content: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
+});
