@@ -1,7 +1,15 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import {
+    View,
+    Text,
+    TextInput,
+    FlatList,
+    StyleSheet,
+    TouchableOpacity,
+    ActivityIndicator
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-
+import RecipeCard from '../components/RecipeCard';
 
 const TagFeedScreen = ({ navigation, route }) => {
 
