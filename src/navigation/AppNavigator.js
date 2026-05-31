@@ -1,3 +1,4 @@
+import RecipeDetailScreen from '../screens/RecipeDetailScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
