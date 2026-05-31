@@ -8,6 +8,7 @@ import SPACING from '../constants/spacing';
 import LoginScreen from '../screens/LoginScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import ExploreScreen from '../screens/ExploreScreen';
+import TagFeedScreen from '../screens/TagFeedScreen';
 import CreateRecipeScreen from '../screens/CreateRecipeScreen';
 import PlaceholderScreen from '../components/PlaceholderScreen';
 
@@ -41,7 +42,8 @@ const FeedStack = () => (
 const ExploreStack = () => (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="ExploreMain" component={ExploreScreen} />
-        {/* İleride buraya TagFeedScreen ve RecipeDetailScreen ekleyeceksin */}
+        {/* TagFeed ekranını yığına kaydediyoruz */}
+        <Stack.Screen name="TagFeed" component={TagFeedScreen} />
     </Stack.Navigator>
 );
 const PlannerStack = () => (
