@@ -43,8 +43,9 @@ const FeedStack = () => (
 const ExploreStack = () => (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="ExploreMain" component={ExploreScreen} />
-        {/* TagFeed ekranını yığına kaydediyoruz */}
         <Stack.Screen name="TagFeed" component={TagFeedScreen} />
+        {/* DETAY EKRANINI BURAYA KAYDEDİYORUZ */}
+        <Stack.Screen name="RecipeDetail" component={RecipeDetailScreen} />
     </Stack.Navigator>
 );
 const PlannerStack = () => (
