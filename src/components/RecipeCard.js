@@ -99,5 +99,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginRight: 15,
     },
+    infoText: {
+        fontSize: 13,
+        color: '#555',
+        marginLeft: 4,
+    }
 
 });
