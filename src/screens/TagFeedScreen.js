@@ -44,11 +44,12 @@ const TagFeedScreen = ({ navigation, route }) => {
     }, [recipes, searchQuery]);
 
 
-    // Karta tıklandığında detaya gitme
     const handleRecipePress = useCallback((recipe) => {
-        // Tıklanan tarifi alıp RecipeDetail ekranına parametre olarak gönderiyoruz
+        console.log("Karta tıklandı, Gidilecek Tarif:", recipe.name);
+        // Buradaki 'RecipeDetail' ismi, AppNavigator'daki name ile BİREBİR aynı olmalı
         navigation.navigate('RecipeDetail', { recipe: recipe });
     }, [navigation]);
+
 
     const renderItem = useCallback(({ item }) => (
         <RecipeCard
