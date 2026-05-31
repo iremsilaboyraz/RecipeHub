@@ -44,7 +44,7 @@ const RecipeDetailScreen = ({ route, navigation }) => {
     const isFavorite = favorites.includes(recipe.id);
 
     const handleAddToPlan = (dayId) => {
-        // İleride buraya: addToDay(dayId, recipe.id);
+         addToDay(dayId, recipe.id);
         Alert.alert("Başarılı", `Tarif ${dayId} gününe eklendi!`);
     };
 
