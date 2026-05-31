@@ -47,3 +47,43 @@ const DayPickerModal = ({ visible, onClose, onSelectDay }) => {
 };
 
 export default DayPickerModal;
+
+const styles = StyleSheet.create({
+    overlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        justifyContent: 'flex-end',
+    },
+    modalContent: {
+        backgroundColor: '#FFF',
+        borderTopLeftRadius: 24,
+        borderTopRightRadius: 24,
+        padding: 20,
+        maxHeight: '60%',
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 20,
+        paddingBottom: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#EAEAEA',
+    },
+    title: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        fontFamily: 'Inter',
+    },
+    dayItem: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingVertical: 15,
+        borderBottomWidth: 1,
+        borderBottomColor: '#F0F0F0',
+    },
+    dayText: {
+        fontSize: 16,
+        fontFamily: 'Inter',
+    }
+});
