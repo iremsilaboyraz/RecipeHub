@@ -68,7 +68,22 @@ const styles = StyleSheet.create({
     content: {
         padding: 15,
     },
-
+    headerRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 5,
+    },
+    title: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        flex: 1,
+        marginRight: 10,
+        color: '#000',
+    },
+    likeButton: {
+        padding: 2,
+    },
 
 
 });
