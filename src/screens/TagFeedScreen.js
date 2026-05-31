@@ -62,6 +62,53 @@ const TagFeedScreen = ({ navigation, route }) => {
         />
     ), [handleRecipePress, handleLikePress]);
 
+    return (
+        <View style={styles.container}>
+            {/* Header */}
+            <View style={styles.header}>
+                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+                    <Ionicons name="chevron-back" size={28} color="#000" />
+                </TouchableOpacity>
+                <Text style={styles.headerTitle}>{tag} Tarifleri</Text>
+            </View>
+
+            {/* Arama Çubuğu */}
+            <View style={styles.searchContainer}>
+                <Ionicons name="search-outline" size={20} color="#888" style={styles.searchIcon} />
+                <TextInput
+                    style={styles.searchInput}
+                    placeholder="Bu etikette tarif ara..."
+                    placeholderTextColor="#888"
+                    value={searchQuery}
+                    onChangeText={setSearchQuery}
+                />
+            </View>
+
+            {/* Liste Gösterimi */}
+            {isLoading ? (
+                <View style={styles.centerBox}>
+                    <ActivityIndicator size="large" color="#FF7700" />
+                </View>
+            ) : filteredRecipes.length === 0 ? (
+                <View style={styles.centerBox}>
+                    <Text style={styles.emptyText}>Bu aramaya uygun tarif bulunamadı.</Text>
+                </View>
+            ) : (
+                <FlatList
+                    data={filteredRecipes}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={renderItem}
+                    contentContainerStyle={styles.listContent}
+                    showsVerticalScrollIndicator={false}
+                    initialNumToRender={6} // Performans zorunluluğu
+                    removeClippedSubviews={true}
+                />
+            )}
+        </View>
+    );
+};
+
+
 
 export default TagFeedScreen;
 
