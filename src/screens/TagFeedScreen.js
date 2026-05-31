@@ -111,7 +111,6 @@ const TagFeedScreen = ({ navigation, route }) => {
 
 
 export default TagFeedScreen;
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -122,7 +121,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 20,
-        marginBottom: 20,
+        marginBottom: 15,
     },
     backButton: {
         marginRight: 10,
@@ -131,10 +130,39 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: '600',
         color: '#000',
+        textTransform: 'capitalize',
     },
-    content: {
+    searchContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#FFF',
+        borderWidth: 1,
+        borderColor: '#E0E0E0',
+        borderRadius: 10,
+        paddingHorizontal: 15,
+        height: 45,
+        marginHorizontal: 20,
+        marginBottom: 15,
+    },
+    searchIcon: {
+        marginRight: 10,
+    },
+    searchInput: {
+        flex: 1,
+        fontSize: 16,
+        color: '#000',
+    },
+    listContent: {
+        paddingHorizontal: 20,
+        paddingBottom: 30,
+    },
+    centerBox: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    emptyText: {
+        fontSize: 16,
+        color: '#888',
     }
 });
