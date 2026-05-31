@@ -1,26 +1,36 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const RecipeCard = ({ recipe, onPress, onLike, isLiked }) => {
+
+    // BURASI EKLENDİ: Beğeni sayısını anlık hesaplayan mantık (Optimistik UI)
+    const displayLikes = useMemo(() => {
+        // DummyJSON API'sinde reviewCount dönüyor, bunu temel beğeni sayısı yapıyoruz
+        const baseLikes = recipe.reviewCount || 0;
+        // Eğer context'te beğenilmiş görünüyorsa anında +1 ekleyerek göster
+        return isLiked ? baseLikes + 1 : baseLikes;
+    }, [recipe.reviewCount, isLiked]);
+
     return (
-        <TouchableOpacity
-            style={styles.card}
-            onPress={() => onPress(recipe)}
-            activeOpacity={0.9}
-        >
+        <TouchableOpacity style={styles.card} onPress={() => onPress(recipe)} activeOpacity={0.9}>
             <Image source={{ uri: recipe.image }} style={styles.image} />
 
             <View style={styles.content}>
                 <View style={styles.headerRow}>
                     <Text style={styles.title} numberOfLines={1}>{recipe.name}</Text>
-                    {/* Beğeni İkonu */}
-                    <TouchableOpacity onPress={() => onLike(recipe.id)} style={styles.likeButton}>
+
+                    {/* Beğeni İkonu ve Sayısı */}
+                    <TouchableOpacity onPress={() => onLike(recipe.id)} style={styles.likeContainer}>
                         <Ionicons
                             name={isLiked ? "heart" : "heart-outline"}
-                            size={24}
+                            size={26}
                             color={isLiked ? "#661313" : "#888"}
                         />
+                        {/* Sayı burada ekrana basılıyor */}
+                        <Text style={[styles.likeCount, isLiked && styles.likeCountActive]}>
+                            {displayLikes}
+                        </Text>
                     </TouchableOpacity>
                 </View>
 
@@ -35,19 +45,13 @@ const RecipeCard = ({ recipe, onPress, onLike, isLiked }) => {
                         <Ionicons name="flame-outline" size={16} color="#555" />
                         <Text style={styles.infoText}>{recipe.caloriesPerServing} kcal</Text>
                     </View>
-                    <View style={styles.infoItem}>
-                        <Ionicons name="star-outline" size={16} color="#555" />
-                        <Text style={styles.infoText}>{recipe.rating}</Text>
-                    </View>
                 </View>
             </View>
         </TouchableOpacity>
     );
 };
 
-// React.memo optimizasyonu
 export default React.memo(RecipeCard);
-
 
 const styles = StyleSheet.create({
     card: {
@@ -81,12 +85,23 @@ const styles = StyleSheet.create({
         marginRight: 10,
         color: '#000',
     },
-    likeButton: {
+    likeContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
         padding: 2,
+    },
+    likeCount: {
+        marginLeft: 4,
+        fontSize: 14,
+        fontWeight: '600',
+        color: '#888',
+    },
+    likeCountActive: {
+        color: '#661313', // İçi dolunca sayının rengi de koyu kırmızı olacak
     },
     subtitle: {
         fontSize: 14,
-        color: '#FF7700', // Tasarımdaki turuncu
+        color: '#FF7700',
         fontWeight: '500',
         marginBottom: 10,
     },
@@ -104,5 +119,4 @@ const styles = StyleSheet.create({
         color: '#555',
         marginLeft: 4,
     }
-
 });
