@@ -84,6 +84,20 @@ const styles = StyleSheet.create({
     likeButton: {
         padding: 2,
     },
-
+    subtitle: {
+        fontSize: 14,
+        color: '#FF7700', // Tasarımdaki turuncu
+        fontWeight: '500',
+        marginBottom: 10,
+    },
+    footerRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    infoItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginRight: 15,
+    },
 
 });
