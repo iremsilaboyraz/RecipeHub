@@ -58,7 +58,8 @@ const RecipeDetailScreen = ({ route, navigation }) => {
                 </TouchableOpacity>
                 <Text style={styles.headerTitle}>Tarif Detayı</Text>
                 <TouchableOpacity onPress={() => toggleFavorite(recipe.id)} style={styles.headerIcon}>
-                    <Ionicons name={isFavorite ? "heart" : "heart-outline"} size={28} color={isFavorite ? "#000" : "#000"} />
+                    {/* Favori ikonu bookmark (ayraç) olarak değiştirildi ve seçilince turuncu olacak */}
+                    <Ionicons name={isFavorite ? "bookmark" : "bookmark-outline"} size={28} color={isFavorite ? "#DA854D" : "#000"} />
                 </TouchableOpacity>
             </View>
 
@@ -190,7 +191,7 @@ const styles = StyleSheet.create({
     headerTitle: {
         fontSize: 24,
         fontFamily: 'Inter',
-        fontWeight: '600',
+        fontWeight: '600', // Semi Bold karşılığı
         color: '#000',
     },
     headerIcon: {
@@ -206,14 +207,17 @@ const styles = StyleSheet.create({
         paddingBottom: 40,
     },
     title: {
-        fontSize: 32, // Figma: Inria Sans 32px
-        fontFamily: 'System', // Projede Inria Sans fontu yüklüyse buraya 'Inria Sans' yaz
+        fontSize: 32,
+        fontFamily: 'Inria Sans',
         fontWeight: 'bold',
         color: '#000',
+        marginBottom: 4,
     },
     subtitle: {
-        fontSize: 16,
-        color: '#DA854D', // Figma'daki renk
+        fontSize: 20,
+        fontFamily: 'Inria Sans',
+        fontWeight: '300', // Light karşılığı
+        color: '#B65311',
         marginBottom: 20,
     },
     statsBox: {
@@ -301,13 +305,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#00000020',
     },
-    sectionTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        fontFamily: 'Inter',
-        marginBottom: 15,
-        color: '#000',
-    },
+
     ingredientRow: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -319,6 +317,13 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         backgroundColor: '#B65311', // Figma'daki yuvarlak im rengi
         marginRight: 15,
+    },
+    sectionTitle: {
+        fontSize: 20, // Malzemeler başlığı biraz daha tok durmalı
+        fontWeight: 'bold',
+        fontFamily: 'Inter',
+        marginBottom: 15,
+        color: '#000',
     },
     ingredientText: {
         fontSize: 16,
