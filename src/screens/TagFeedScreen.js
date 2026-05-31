@@ -12,25 +12,28 @@ import { Ionicons } from '@expo/vector-icons';
 import RecipeCard from '../components/RecipeCard';
 
 const TagFeedScreen = ({ navigation, route }) => {
-
     const { tag } = route.params;
 
-    return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-                    <Ionicons name="chevron-back" size={28} color="#000" />
-                </TouchableOpacity>
+    const [recipes, setRecipes] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
 
-                <Text style={styles.headerTitle}>{tag} Tarifleri</Text>
-            </View>
+    // API'den etikete ait tarifleri çekme
+    useEffect(() => {
+        const fetchRecipesByTag = async () => {
+            try {
+                const response = await fetch(`https://dummyjson.com/recipes/tag/${tag}`);
+                const data = await response.json();
+                setRecipes(data.recipes);
+            } catch (error) {
+                console.error("Tarifler yüklenirken hata:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchRecipesByTag();
+    }, [tag]);
 
-            <View style={styles.content}>
-                <Text>Burada "{tag}" etiketine ait yemek kartları listelenecek.</Text>
-            </View>
-        </View>
-    );
-};
 
 export default TagFeedScreen;
 
