@@ -18,7 +18,7 @@ const TagFeedScreen = ({ navigation, route }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [isLoading, setIsLoading] = useState(true);
 
-    // API'den etikete ait tarifleri çekme
+
     useEffect(() => {
         const fetchRecipesByTag = async () => {
             try {
@@ -33,6 +33,34 @@ const TagFeedScreen = ({ navigation, route }) => {
         };
         fetchRecipesByTag();
     }, [tag]);
+
+    const filteredRecipes = useMemo(() => {
+        if (!searchQuery.trim()) return recipes;
+        return recipes.filter(recipe =>
+            recipe.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    }, [recipes, searchQuery]);
+
+
+    const handleRecipePress = useCallback((recipe) => {
+        // İleride buraya: navigation.navigate('RecipeDetail', { recipeId: recipe.id })
+        console.log("Tarif detayına gidilecek:", recipe.name);
+    }, []);
+
+
+    const handleLikePress = useCallback((recipeId) => {
+        console.log("Beğenildi, Context'e bağlanacak ID:", recipeId);
+    }, []);
+
+
+    const renderItem = useCallback(({ item }) => (
+        <RecipeCard
+            recipe={item}
+            onPress={handleRecipePress}
+            onLike={handleLikePress}
+            isLiked={false} // Bu değer ileride RecipeContext'ten (likedRecipes) gelecek
+        />
+    ), [handleRecipePress, handleLikePress]);
 
 
 export default TagFeedScreen;
