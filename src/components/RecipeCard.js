@@ -47,3 +47,28 @@ const RecipeCard = ({ recipe, onPress, onLike, isLiked }) => {
 
 // React.memo optimizasyonu
 export default React.memo(RecipeCard);
+
+
+const styles = StyleSheet.create({
+    card: {
+        backgroundColor: '#FFF',
+        borderRadius: 16,
+        marginBottom: 20,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 6,
+        elevation: 3,
+        overflow: 'hidden',
+    },
+    image: {
+        width: '100%',
+        height: 180,
+    },
+    content: {
+        padding: 15,
+    },
+
+
+
+});
