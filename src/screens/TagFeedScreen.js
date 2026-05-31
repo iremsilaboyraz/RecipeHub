@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import RecipeCard from '../components/RecipeCard';
+import { useRecipe } from '../context/RecipeContext';
 
 const TagFeedScreen = ({ navigation, route }) => {
     const { tag } = route.params;
@@ -18,6 +19,7 @@ const TagFeedScreen = ({ navigation, route }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [isLoading, setIsLoading] = useState(true);
 
+    const { liked, likeRecipe } = useRecipe();
 
     useEffect(() => {
         const fetchRecipesByTag = async () => {
@@ -48,19 +50,15 @@ const TagFeedScreen = ({ navigation, route }) => {
     }, []);
 
 
-    const handleLikePress = useCallback((recipeId) => {
-        console.log("Beğenildi, Context'e bağlanacak ID:", recipeId);
-    }, []);
-
-
     const renderItem = useCallback(({ item }) => (
         <RecipeCard
             recipe={item}
             onPress={handleRecipePress}
-            onLike={handleLikePress}
-            isLiked={false} // Bu değer ileride RecipeContext'ten (likedRecipes) gelecek
+            onLike={() => likeRecipe(item.id)} // Tıklanınca Context'teki fonksiyon çalışır
+            isLiked={liked.includes(item.id)}  // Context'teki liked dizisinde bu ID var mı diye bakar
         />
-    ), [handleRecipePress, handleLikePress]);
+    ), [handleRecipePress, likeRecipe, liked]);
+
 
     return (
         <View style={styles.container}>
