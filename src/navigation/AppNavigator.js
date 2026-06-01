@@ -1,9 +1,9 @@
+import { Ionicons, Feather } from '@expo/vector-icons';
 import RecipeDetailScreen from '../screens/RecipeDetailScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Text, View, Platform } from 'react-native';
-import { useTheme } from '../context/ThemeContext';  // ← DEĞİŞTİ
 import SPACING from '../constants/spacing';
 // Screens
 import LoginScreen from '../screens/LoginScreen';
@@ -67,69 +67,48 @@ const FeedScreen = () => <PlaceholderScreen title="Ana Sayfa (Feed)" />;
 const PlannerScreen = () => <PlaceholderScreen title="Haftalık Plan (Planner)" />;
 
 const AppNavigator = () => {
-  const { theme } = useTheme();
+    return (
+        <Tab.Navigator
+            screenOptions={({ route }) => ({
+                headerShown: false, // Üstteki varsayılan başlıkları gizle
+                tabBarShowLabel: false, // FIGMA TASARIMINDAKİ GİBİ ALT YAZILARI GİZLE
+                tabBarStyle: {
+                    backgroundColor: '#FFFFFF',
+                    borderTopWidth: 1,
+                    borderTopColor: '#EAEAEA',
+                    height: 80, // Tıklama alanı için ideal yükseklik
+                    paddingBottom: 20, // iOS cihazlar için alt boşluk
+                    paddingTop: 10,
+                },
+                tabBarIcon: ({ focused }) => {
+                    // Renk ayarları
+                    const iconColor = focused ? '#DA854D' : '#000000';
+                    const iconSize = 28;
 
-  return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        headerShown: false,
-        tabBarIcon: ({ focused }) => {
-          // Special styling for Create button (center)
-          if (route.name === 'Create') {
-            return (
-              <View
-                style={{
-                  width: 56,
-                  height: 56,
-                  borderRadius: 28,
-                  backgroundColor: theme.primary,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginBottom: Platform.OS === 'ios' ? 10 : 20,
-                  shadowColor: theme.primary,
-                  shadowOffset: { width: 0, height: 4 },
-                  shadowOpacity: 0.35,
-                  shadowRadius: 8,
-                  elevation: 6,
-                }}
-              >
-                <Text style={{ fontSize: 24 }}>{TAB_ICONS[route.name]}</Text>
-              </View>
-            );
-          }
-
-          return (
-            <Text style={{ fontSize: focused ? 22 : 20, opacity: focused ? 1 : 0.6 }}>
-              {TAB_ICONS[route.name]}
-            </Text>
-          );
-        },
-        tabBarLabel: route.name === 'Create' ? '' : TAB_LABELS[route.name],
-        tabBarActiveTintColor: theme.primary,
-        tabBarInactiveTintColor: theme.textSecondary,
-        tabBarStyle: {
-          backgroundColor: theme.tabBar,
-          borderTopColor: theme.tabBarBorder,
-          borderTopWidth: 1,
-          paddingBottom: Platform.OS === 'ios' ? 20 : 8,
-          height: Platform.OS === 'ios' ? 85 : 65,
-        },
-        tabBarLabelStyle: {
-          fontSize: 11,
-          fontWeight: '600',
-          marginTop: 4,
-        },
-      })}
-    >
-        <Tab.Screen name="Feed" component={FeedStack} />
-        <Tab.Screen name="Explore" component={ExploreStack} />
-
-        <Tab.Screen name="Create" component={CreateRecipeScreen} />
-
-        <Tab.Screen name="Planner" component={PlannerStack} />
-        <Tab.Screen name="Settings" component={ProfileStack} />
-    </Tab.Navigator>
-  );
+                    if (route.name === 'Ana Sayfa') {
+                        return <Ionicons name={focused ? 'home' : 'home-outline'} size={iconSize} color={iconColor} />;
+                    } else if (route.name === 'Keşfet') {
+                        return <Ionicons name={focused ? 'search' : 'search-outline'} size={iconSize} color={iconColor} />;
+                    } else if (route.name === 'Ekle') {
+                        // Soru işaretini çözen kısım: Ionicons kütüphanesinden garantili "add" ikonu.
+                        // Tıklansa da tıklanmasa da hep artı (+) olarak kalacak.
+                        // İstersen daha belirgin olması için size={34} gibi bir tık daha büyük yapabilirsin.
+                        return <Ionicons name="add" size={32} color={iconColor} />;
+                    } else if (route.name === 'Plan') {
+                        return <Ionicons name={focused ? 'calendar' : 'calendar-outline'} size={iconSize} color={iconColor} />;
+                    } else if (route.name === 'Profil') {
+                        return <Ionicons name={focused ? 'person' : 'person-outline'} size={iconSize} color={iconColor} />;
+                    }
+                },
+            })}
+        >
+            <Tab.Screen name="Ana Sayfa" component={FeedScreen} />
+            <Tab.Screen name="Keşfet" component={ExploreStack} />
+            <Tab.Screen name="Ekle" component={CreateRecipeScreen} />
+            <Tab.Screen name="Plan" component={PlannerScreen} />
+            <Tab.Screen name="Profil" component={SettingsScreen} />
+        </Tab.Navigator>
+    );
 };
 
 export default AppNavigator;
