@@ -1,3 +1,4 @@
+import { usePlanner } from '../context/PlannerContext';
 import React, { useEffect, useRef, useState } from 'react';
 import {
     View,
@@ -16,7 +17,7 @@ import DayPickerModal from '../components/DayPickerModal';
 const RecipeDetailScreen = ({ route, navigation }) => {
     const { recipe } = route.params || {};
     const { liked, likeRecipe, favorites, toggleFavorite } = useRecipe();
-
+    const { addToDay } = usePlanner();
     // PlannerContext'i ileride bağlayacağın için şimdilik boş bir fonksiyon oluşturuyoruz
     // import { usePlanner } from '../context/PlannerContext';
     // const { addToDay } = usePlanner();
@@ -44,8 +45,10 @@ const RecipeDetailScreen = ({ route, navigation }) => {
     const isFavorite = favorites.includes(recipe.id);
 
     const handleAddToPlan = (dayId) => {
-         addToDay(dayId, recipe.id);
-        Alert.alert("Başarılı", `Tarif ${dayId} gününe eklendi!`);
+        // dayId (örneğin 'Monday') ve recipe objesinin tamamını gönderiyoruz
+        addToDay(dayId, recipe);
+        setModalVisible(false); // Modalı kapatmayı unutma!
+        Alert.alert("Başarılı", `Tarif ${dayId} gününe planlandı!`);
     };
 
 
