@@ -11,9 +11,18 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import RecipeCard from '../components/RecipeCard';
 import { useRecipe } from '../context/RecipeContext';
+import { useTheme } from '../context/ThemeContext'; // <-- Tema eklendi
 
 const TagFeedScreen = ({ navigation, route }) => {
     const { tag } = route.params;
+
+    // Tema hook'unu ve renk değişkenlerini tanımladık
+    const { isDark } = useTheme();
+    const currentBg = isDark ? '#121212' : '#FAFAFA';
+    const currentText = isDark ? '#FFFFFF' : '#000000';
+    const currentInputBg = isDark ? '#1E1E1E' : '#FFFFFF';
+    const currentBorder = isDark ? '#333333' : '#E0E0E0';
+    const currentPlaceholder = isDark ? '#AAAAAA' : '#888888';
 
     const [recipes, setRecipes] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
@@ -43,41 +52,37 @@ const TagFeedScreen = ({ navigation, route }) => {
         );
     }, [recipes, searchQuery]);
 
-
     const handleRecipePress = useCallback((recipe) => {
         console.log("Karta tıklandı, Gidilecek Tarif:", recipe.name);
-        // Buradaki 'RecipeDetail' ismi, AppNavigator'daki name ile BİREBİR aynı olmalı
         navigation.navigate('RecipeDetail', { recipe: recipe });
     }, [navigation]);
-
 
     const renderItem = useCallback(({ item }) => (
         <RecipeCard
             recipe={item}
             onPress={handleRecipePress}
-            onLike={() => likeRecipe(item.id)} // Tıklanınca Context'teki fonksiyon çalışır
-            isLiked={liked.includes(item.id)}  // Context'teki liked dizisinde bu ID var mı diye bakar
+            onLike={() => likeRecipe(item.id)}
+            isLiked={liked.includes(item.id)}
         />
     ), [handleRecipePress, likeRecipe, liked]);
 
-
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: currentBg }]}>
             {/* Header */}
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-                    <Ionicons name="chevron-back" size={28} color="#000" />
+                    <Ionicons name="chevron-back" size={28} color={currentText} />
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>{tag} Tarifleri</Text>
+                <Text style={[styles.headerTitle, { color: currentText }]}>{tag} Tarifleri</Text>
             </View>
 
             {/* Arama Çubuğu */}
-            <View style={styles.searchContainer}>
-                <Ionicons name="search-outline" size={20} color="#888" style={styles.searchIcon} />
+            <View style={[styles.searchContainer, { backgroundColor: currentInputBg, borderColor: currentBorder }]}>
+                <Ionicons name="search-outline" size={20} color={currentPlaceholder} style={styles.searchIcon} />
                 <TextInput
-                    style={styles.searchInput}
+                    style={[styles.searchInput, { color: currentText }]}
                     placeholder="Bu etikette tarif ara..."
-                    placeholderTextColor="#888"
+                    placeholderTextColor={currentPlaceholder}
                     value={searchQuery}
                     onChangeText={setSearchQuery}
                 />
@@ -90,7 +95,7 @@ const TagFeedScreen = ({ navigation, route }) => {
                 </View>
             ) : filteredRecipes.length === 0 ? (
                 <View style={styles.centerBox}>
-                    <Text style={styles.emptyText}>Bu aramaya uygun tarif bulunamadı.</Text>
+                    <Text style={[styles.emptyText, { color: currentPlaceholder }]}>Bu aramaya uygun tarif bulunamadı.</Text>
                 </View>
             ) : (
                 <FlatList
@@ -99,7 +104,7 @@ const TagFeedScreen = ({ navigation, route }) => {
                     renderItem={renderItem}
                     contentContainerStyle={styles.listContent}
                     showsVerticalScrollIndicator={false}
-                    initialNumToRender={6} // Performans zorunluluğu
+                    initialNumToRender={6}
                     removeClippedSubviews={true}
                 />
             )}
@@ -107,13 +112,12 @@ const TagFeedScreen = ({ navigation, route }) => {
     );
 };
 
-
-
 export default TagFeedScreen;
+
+// STYLESHEET (Sabit renkler temizlendi)
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FAFAFA',
         paddingTop: 50,
     },
     header: {
@@ -128,15 +132,12 @@ const styles = StyleSheet.create({
     headerTitle: {
         fontSize: 24,
         fontWeight: '600',
-        color: '#000',
         textTransform: 'capitalize',
     },
     searchContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#FFF',
         borderWidth: 1,
-        borderColor: '#E0E0E0',
         borderRadius: 10,
         paddingHorizontal: 15,
         height: 45,
@@ -149,7 +150,6 @@ const styles = StyleSheet.create({
     searchInput: {
         flex: 1,
         fontSize: 16,
-        color: '#000',
     },
     listContent: {
         paddingHorizontal: 20,
@@ -162,6 +162,5 @@ const styles = StyleSheet.create({
     },
     emptyText: {
         fontSize: 16,
-        color: '#888',
     }
 });
