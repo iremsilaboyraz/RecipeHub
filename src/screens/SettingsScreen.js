@@ -22,7 +22,7 @@ const SettingsScreen = () => {
     const { logout } = useAuth(); // Çıkış yap fonksiyonu (App.js'deki Login ekranına atar)
     const { theme, isDark, toggleTheme } = useTheme(); // Karanlık mod kontrolü
     const { weekly, totalPlanned } = usePlanner();
-    const { favorites, liked } = useRecipe();
+    const { favorites, liked, recipes, toggleFavorite } = useRecipe();
 
     // Yerel Stateler
     const [activeTab, setActiveTab] = useState('İstatistikler');
@@ -174,10 +174,47 @@ const SettingsScreen = () => {
 
                 </View>
             ) : (
+
                 <View style={styles.tabContent}>
-                    <Text style={{ color: currentSecondaryText, textAlign: 'center', marginTop: 30 }}>
-                        Favori tarifleriniz burada listelenecek...
-                    </Text>
+                    {/* YENİ EKLENEN FAVORİLER LİSTESİ */}
+                    {favorites && favorites.length > 0 ? (
+                        favorites.map((recipeId) => {
+                            // Favori ID'sine sahip tarifi tüm tarifler arasından bul
+                            const recipe = recipes?.find(r => r.id === recipeId);
+
+                            if (!recipe) return null; // Eğer tarif bulunamazsa boş dön
+
+                            return (
+                                <View key={recipe.id} style={[styles.favoriteCard, { backgroundColor: currentCardBg, borderColor: currentBorderColor }]}>
+                                    {/* Tarif Görseli */}
+                                    <Image
+                                        source={{ uri: recipe.image || 'https://via.placeholder.com/150' }}
+                                        style={styles.favoriteImage}
+                                    />
+
+                                    {/* Tarif Bilgileri */}
+                                    <View style={styles.favoriteInfo}>
+                                        <Text style={[styles.favoriteTitle, { color: currentTextColor }]} numberOfLines={1}>
+                                            {recipe.title || recipe.name}
+                                        </Text>
+                                        <Text style={styles.favoriteTime}>{recipe.time || '35 dk'}</Text>
+                                    </View>
+
+                                    {/* Favoriden Çıkarma Butonu */}
+                                    <TouchableOpacity
+                                        style={styles.removeFavoriteBtn}
+                                        onPress={() => toggleFavorite(recipe.id)}
+                                    >
+                                        <Ionicons name="bookmark" size={24} color="#FF7700" />
+                                    </TouchableOpacity>
+                                </View>
+                            );
+                        })
+                    ) : (
+                        <Text style={{ color: currentSecondaryText, textAlign: 'center', marginTop: 30 }}>
+                            Henüz favori tarifiniz bulunmuyor.
+                        </Text>
+                    )}
                 </View>
             )}
 
