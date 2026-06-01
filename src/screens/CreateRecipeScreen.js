@@ -83,7 +83,7 @@ const formReducer = (state, action) => {
   }
 };
 
-// ─── Validation (Yukarı Taşındı ki ReferenceError Çıkmasın!) ──────────────────
+// ─── Validation () ──────────────────
 const validateStep = (step, state) => {
   if (step === 1) {
     if (!state.title.trim()) {
@@ -182,18 +182,18 @@ const StepOne = ({ state, dispatch, theme, goNext }) => {
           onChangeText={(v) => setField('calories', v)}
           keyboardType="numeric"
         />
-        <View style={[s.col, s.stepperContainer]}>
+        <View style={s.stepperContainer}>
           <Text style={s.stepperLabel}>Porsiyon</Text>
           <View style={s.stepperBox}>
-            <TouchableOpacity 
-              style={s.stepperBtn} 
+            <TouchableOpacity
+              style={s.stepperBtn}
               onPress={() => setField('servings', Math.max(1, parseInt(state.servings) - 1))}
             >
               <Text style={s.stepperBtnText}>-</Text>
             </TouchableOpacity>
             <Text style={s.stepperValue}>{state.servings}</Text>
-            <TouchableOpacity 
-              style={s.stepperBtn} 
+            <TouchableOpacity
+              style={s.stepperBtn}
               onPress={() => setField('servings', parseInt(state.servings) + 1)}
             >
               <Text style={s.stepperBtnText}>+</Text>
@@ -308,8 +308,8 @@ const StepThree = ({ state, dispatch, theme, handleSubmit, goPrev }) => {
         <Text style={s.addBtnText}>+ Talimat Ekle</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity 
-        style={[s.figmaPrimaryBtn, s.submitBtnColor]} 
+      <TouchableOpacity
+        style={[s.figmaPrimaryBtn, s.submitBtnColor]}
         onPress={handleSubmit}
         disabled={state.isSubmitting}
       >
@@ -445,10 +445,10 @@ const stepStyles = (theme) =>
     chipActive: { backgroundColor: '#FFF', elevation: 2, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4 },
     chipText: { fontSize: 13, fontWeight: '600', color: '#666' },
     chipTextActive: { color: '#E64A19', fontWeight: 'bold' },
-    row2: { flexDirection: 'row', gap: 12, marginBottom: 16 },
+    row2: { flexDirection: 'row', gap: 12, marginBottom: 16, alignItems: 'flex-end' },
     col: { flex: 1 },
-    stepperContainer: { alignItems: 'center' },
-    stepperLabel: { fontSize: 12, color: '#666', marginBottom: 4 },
+    stepperContainer: { width: 120 },
+    stepperLabel: { fontSize: 12, color: '#666', marginBottom: 4, textAlign: 'center' },
     stepperBox: { flexDirection: 'row', backgroundColor: '#F2F2F2', borderRadius: 14, height: 52, alignItems: 'center', paddingHorizontal: 8 },
     stepperBtn: { width: 36, height: 36, backgroundColor: '#E0E0E0', borderRadius: 10, justifyContent: 'center', alignItems: 'center' },
     stepperBtnText: { fontSize: 18, fontWeight: 'bold', color: '#333' },
@@ -482,7 +482,7 @@ const makeStyles = (theme) =>
       alignItems: 'center',
       justifyContent: 'space-between',
       paddingHorizontal: 24,
-      paddingTop: Platform.OS === 'ios' ? 50 : 20,
+      paddingTop: Platform.OS === 'ios' ? 50 : 50,
       paddingBottom: 12,
       backgroundColor: '#FFF',
     },
