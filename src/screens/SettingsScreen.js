@@ -186,3 +186,148 @@ const SettingsScreen = () => {
         </ScrollView>
     );
 };
+
+export default SettingsScreen;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        paddingHorizontal: 20,
+        paddingTop: 60
+    },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 35
+    },
+    avatar: {
+        width: 90,
+        height: 90,
+        borderRadius: 45
+    },
+    userInfo: {
+        marginLeft: 20,
+        flex: 1
+    },
+    userName: {
+        fontSize: 24,
+        fontFamily: 'Inter',
+        fontWeight: 'bold',
+        lineHeight: 28
+    },
+    userHandle: {
+        fontSize: 14,
+        marginTop: 4
+    },
+    logoutBtn: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: 'rgba(211, 47, 47, 0.1)',
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        borderRadius: 12
+    },
+    logoutText: {
+        color: '#D32F2F',
+        marginLeft: 6,
+        fontWeight: '600',
+        fontSize: 16
+    },
+    statsRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 30
+    },
+    statCard: {
+        width: 104,
+        height: 94,
+        borderRadius: 16,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    statTitle: {
+        fontSize: 14,
+        fontWeight: '600',
+        marginBottom: 8
+    },
+    statValue: {
+        fontSize: 24,
+        fontWeight: 'bold'
+    },
+    tabsRow: {
+        flexDirection: 'row',
+        borderBottomWidth: 1,
+        borderBottomColor: '#E0E0E0',
+        marginBottom: 25
+    },
+    tab: {
+        paddingVertical: 10,
+        marginRight: 25
+    },
+    activeTab: {
+        borderBottomWidth: 2,
+        borderBottomColor: '#FF7700'
+    },
+    tabText: {
+        fontSize: 18,
+        fontFamily: 'Inria Sans'
+    },
+    tabContent: {
+        flex: 1,
+    },
+    card: {
+        borderWidth: 1,
+        borderRadius: 12,
+        padding: 20,
+    },
+    cardTitle: {
+        fontSize: 18,
+        fontFamily: 'Inter',
+        fontWeight: 'bold'
+    },
+    planSummaryRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginTop: 15
+    },
+    planSummaryItem: {
+        alignItems: 'center'
+    },
+    planSummaryLabel: {
+        color: '#888',
+        fontSize: 14,
+        marginBottom: 8
+    },
+    planSummaryValue: {
+        color: '#B65311',
+        fontSize: 24,
+        fontWeight: 'bold',
+        fontFamily: 'Inter'
+    },
+    settingRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    settingInfo: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    iconBox: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 15
+    },
+    settingName: {
+        fontSize: 16,
+        fontWeight: '600'
+    },
+    settingDesc: {
+        fontSize: 13,
+        color: '#888',
+        marginTop: 2
+    }
+});
