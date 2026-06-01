@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import TagBadge from '../components/TagBadge';
-
+import { useTheme } from '../context/ThemeContext'; // <-- Tema eklendi
 
 const MEAL_TYPES = [
     { label: 'Tümü', value: 'all' },
@@ -20,6 +20,16 @@ const MEAL_TYPES = [
 ];
 
 const ExploreScreen = ({ navigation }) => {
+    // Tema hook'unu ve renk değişkenlerini tanımladık
+    const { isDark } = useTheme();
+    const currentBg = isDark ? '#121212' : '#FAFAFA';
+    const currentText = isDark ? '#FFFFFF' : '#000000';
+    const currentSubText = isDark ? '#CCCCCC' : '#555555';
+    const currentInputBg = isDark ? '#1E1E1E' : '#FFFFFF';
+    const currentBorder = isDark ? '#333333' : '#E0E0E0';
+    const currentBadgeBg = isDark ? '#333333' : '#EAEAEA';
+    const currentPlaceholder = isDark ? '#AAAAAA' : '#888888';
+
     const [tags, setTags] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedMealType, setSelectedMealType] = useState('all');
@@ -41,17 +51,13 @@ const ExploreScreen = ({ navigation }) => {
         fetchTags();
     }, []);
 
-
     const handleMealTypeSelect = useCallback((type) => {
         setSelectedMealType(type);
-
     }, []);
-
 
     const handleTagPress = useCallback((tag) => {
         navigation.navigate('TagFeed', { tag }); // TagFeed ekranına yönlendirme
     }, [navigation]);
-
 
     const filteredTags = useMemo(() => {
         if (!searchQuery.trim()) return tags;
@@ -61,13 +67,13 @@ const ExploreScreen = ({ navigation }) => {
     }, [tags, searchQuery]);
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: currentBg }]}>
             {/* Header Alanı */}
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-                    <Ionicons name="chevron-back" size={28} color="#000" />
+                    <Ionicons name="chevron-back" size={28} color={currentText} />
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>Keşfet</Text>
+                <Text style={[styles.headerTitle, { color: currentText }]}>Keşfet</Text>
             </View>
 
             {/* Meal Type Filtreleri (Yatay Kaydırma) */}
@@ -78,12 +84,14 @@ const ExploreScreen = ({ navigation }) => {
                             key={meal.value}
                             style={[
                                 styles.mealBadge,
+                                { backgroundColor: currentBadgeBg }, // Dinamik arka plan
                                 selectedMealType === meal.value && styles.mealBadgeActive
                             ]}
                             onPress={() => handleMealTypeSelect(meal.value)}
                         >
                             <Text style={[
                                 styles.mealText,
+                                { color: currentSubText }, // Dinamik yazı rengi
                                 selectedMealType === meal.value && styles.mealTextActive
                             ]}>
                                 {meal.label}
@@ -95,28 +103,26 @@ const ExploreScreen = ({ navigation }) => {
 
             <View style={styles.divider} />
 
-
             {/* Arama Çubuğu */}
-            <View style={styles.searchContainer}>
-                <Ionicons name="search-outline" size={20} color="#888" style={styles.searchIcon} />
+            <View style={[styles.searchContainer, { backgroundColor: currentInputBg, borderColor: currentBorder }]}>
+                <Ionicons name="search-outline" size={20} color={currentPlaceholder} style={styles.searchIcon} />
                 <TextInput
-                    style={styles.searchInput}
+                    style={[styles.searchInput, { color: currentText }]}
                     placeholder="Etiket Ara..."
-                    placeholderTextColor="#888"
+                    placeholderTextColor={currentPlaceholder}
                     value={searchQuery}
                     onChangeText={setSearchQuery}
                 />
             </View>
 
             {/* Etiketler Bölümü */}
-            <Text style={styles.sectionTitle}>Etiketler</Text>
+            <Text style={[styles.sectionTitle, { color: currentText }]}>Etiketler</Text>
 
             {isLoading ? (
                 <ActivityIndicator size="large" color="#FF7700" style={{ marginTop: 20 }} />
             ) : (
                 <ScrollView contentContainerStyle={styles.tagsWrapper}>
                     {filteredTags.map((tag) => (
-
                         <TagBadge
                             key={tag}
                             tag={tag}
@@ -133,11 +139,11 @@ const ExploreScreen = ({ navigation }) => {
 
 export default ExploreScreen;
 
+// STYLESHEET (Sabit renkler temizlendi)
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FAFAFA', // Tasarımdaki arka plan rengi
-        paddingTop: 50, // SafeArea boşluğu (iOS/Android çentiği için)
+        paddingTop: 50,
         paddingHorizontal: 20,
     },
     header: {
@@ -152,7 +158,6 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: '600',
         fontFamily: 'Inter',
-        color: '#000',
     },
     mealTypeContainer: {
         flexDirection: 'row',
@@ -162,34 +167,30 @@ const styles = StyleSheet.create({
         paddingVertical: 6,
         paddingHorizontal: 16,
         borderRadius: 20,
-        backgroundColor: '#EAEAEA',
         marginRight: 10,
     },
     mealBadgeActive: {
-        backgroundColor: '#FF7700', // Turuncu
+        backgroundColor: '#FF7700', // Turuncu (sabit kalmalı)
     },
     mealText: {
         fontSize: 14,
-        color: '#555',
         fontWeight: '500',
     },
     mealTextActive: {
-        color: '#FFF',
+        color: '#FFF', // Aktifken her zaman beyaz olmalı
     },
     divider: {
         height: 1,
-        backgroundColor: '#FF7700', // Tasarımdaki turuncu ince çizgi
+        backgroundColor: '#FF7700',
         opacity: 0.5,
-        marginHorizontal: -20, // Kenarlara yapışması için
+        marginHorizontal: -20,
         marginBottom: 20,
     },
     searchContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#FFF',
         borderWidth: 1,
-        borderColor: '#E0E0E0',
-        borderRadius: 10, // Figma'daki border radius
+        borderRadius: 10,
         paddingHorizontal: 15,
         height: 45,
         marginBottom: 25,
@@ -201,18 +202,16 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: 16,
         fontFamily: 'Inter',
-        color: '#000',
     },
     sectionTitle: {
         fontSize: 20,
         fontWeight: '600',
         fontFamily: 'Inter',
-        color: '#000',
         marginBottom: 15,
     },
     tagsWrapper: {
         flexDirection: 'row',
-        flexWrap: 'wrap', // Tasarımdaki gibi etiketlerin alt satıra geçmesi için
+        flexWrap: 'wrap',
         paddingBottom: 20,
     },
 });
