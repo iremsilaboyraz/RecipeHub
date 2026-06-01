@@ -1,183 +1,276 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
-    Switch,
-    TouchableOpacity,
     StyleSheet,
+    TouchableOpacity,
+    Image,
+    Switch,
     ScrollView,
-    Alert,
-    Platform,
+    ActivityIndicator
 } from 'react-native';
-import { useAuth } from '../context/AuthContext';  // ← DEĞİŞTİ
-import { useTheme } from '../context/ThemeContext';  // ← DEĞİŞTİ
-import SPACING from '../constants/spacing';
-const SettingsScreen = () => {
-    const { user, logout } = useAuth();
-    const { theme, isDark, toggleTheme } = useTheme();
-    const s = makeStyles(theme);
+import { Ionicons } from '@expo/vector-icons';
 
-    const handleLogout = () => {
-        Alert.alert(
-            'Çıkış Yap',
-            'Hesabından çıkmak istediğine emin misin?',
-            [
-                { text: 'Vazgeç', style: 'cancel' },
-                { text: 'Çıkış Yap', style: 'destructive', onPress: logout },
-            ]
-        );
-    };
+// Contexts
+import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
+import { usePlanner } from '../context/PlannerContext';
+import { useRecipe } from '../context/RecipeContext';
+
+const SettingsScreen = () => {
+    // Context Verileri
+    const { logout } = useAuth();
+    const { isDark, toggleTheme } = useTheme();
+    const { weekly, totalPlanned } = usePlanner();
+    const { favorites, liked, toggleFavorite } = useRecipe();
+
+    // Yerel Stateler
+    const [activeTab, setActiveTab] = useState('İstatistikler');
+    const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+
+    // Favori Tariflerin detaylarını tutacağımız yeni state
+    const [favoriteRecipesData, setFavoriteRecipesData] = useState([]);
+    const [isLoadingFavs, setIsLoadingFavs] = useState(false);
+
+    // Favori ID'leri değiştikçe, API'den o tariflerin detaylarını çeken sistem
+    useEffect(() => {
+        const fetchFavoriteDetails = async () => {
+            // Eğer favori yoksa listeyi boşalt ve çık
+            if (!favorites || favorites.length === 0) {
+                setFavoriteRecipesData([]);
+                return;
+            }
+
+            setIsLoadingFavs(true);
+            try {
+                // Favoriler dizisindeki her bir ID için API'ye istek atıyoruz
+                const promises = favorites.map(id =>
+                    fetch(`https://dummyjson.com/recipes/${id}`).then(res => res.json())
+                );
+
+                // Tüm isteklerin bitmesini bekleyip sonucu state'e yazıyoruz
+                const results = await Promise.all(promises);
+                setFavoriteRecipesData(results);
+            } catch (error) {
+                console.error("Favoriler yüklenirken hata oluştu:", error);
+            } finally {
+                setIsLoadingFavs(false);
+            }
+        };
+
+        fetchFavoriteDetails();
+    }, [favorites]); // favorites dizisi her güncellendiğinde bu useEffect baştan çalışır
+
+    // Planlanan gün sayısını hesaplama
+    const plannedDaysCount = Object.values(weekly || {}).filter(dayRecipes => dayRecipes.length > 0).length;
+
+    // Tema Renkleri
+    const currentTextColor = isDark ? '#FFFFFF' : '#000000';
+    const currentSecondaryText = isDark ? '#AAAAAA' : '#888888';
+    const currentCardBg = isDark ? '#1E1E1E' : '#FFFFFF';
+    const currentBorderColor = isDark ? '#444444' : '#E0E0E0';
+    const currentScreenBg = isDark ? '#121212' : '#FAFAFA';
 
     return (
-        <ScrollView
-            style={s.screen}
-            contentContainerStyle={s.content}
-            showsVerticalScrollIndicator={false}
-        >
-            {/* Header */}
-            <View style={s.header}>
-                <Text style={s.headerTitle}>Ayarlar</Text>
+        <ScrollView style={[styles.container, { backgroundColor: currentScreenBg }]} showsVerticalScrollIndicator={false}>
+
+            {/* KULLANICI BİLGİLERİ */}
+            <View style={styles.header}>
+                <Image
+                    source={{ uri: 'https://i.pravatar.cc/150?img=5' }}
+                    style={styles.avatar}
+                />
+                <View style={styles.userInfo}>
+                    <Text style={[styles.userName, { color: currentTextColor }]}>Emily</Text>
+                    <Text style={[styles.userName, { color: currentTextColor }]}>Johnson</Text>
+                    <Text style={[styles.userHandle, { color: currentSecondaryText }]}>@emilys</Text>
+                </View>
+                <TouchableOpacity style={styles.logoutBtn} onPress={logout}>
+                    <Ionicons name="log-out-outline" size={20} color="#D32F2F" />
+                    <Text style={styles.logoutText}>Çıkış</Text>
+                </TouchableOpacity>
             </View>
 
-            {/* Profile Card */}
-            <View style={s.profileCard}>
-                <View style={s.avatarCircle}>
-                    <Text style={s.avatarEmoji}>👩‍🍳</Text>
+            {/* İSTATİSTİK KARTLARI */}
+            <View style={styles.statsRow}>
+                <View style={[styles.statCard, { backgroundColor: 'rgba(48, 100, 212, 0.15)' }]}>
+                    <Text style={[styles.statTitle, { color: '#3064D4' }]}>Beğeniler</Text>
+                    <Text style={[styles.statValue, { color: '#3064D4' }]}>{liked ? liked.length : 0}</Text>
                 </View>
-                <View style={s.profileInfo}>
-                    <Text style={s.profileName}>
-                        {user?.firstName ?? ''} {user?.lastName ?? ''}
+                <View style={[styles.statCard, { backgroundColor: 'rgba(255, 119, 0, 0.15)' }]}>
+                    <Text style={[styles.statTitle, { color: '#FF7700' }]}>Favoriler</Text>
+                    <Text style={[styles.statValue, { color: '#FF7700' }]}>{favorites ? favorites.length : 0}</Text>
+                </View>
+                <View style={[styles.statCard, { backgroundColor: 'rgba(52, 168, 83, 0.15)' }]}>
+                    <Text style={[styles.statTitle, { color: '#34A853' }]}>Planlanan</Text>
+                    <Text style={[styles.statValue, { color: '#34A853' }]}>{totalPlanned || 0}</Text>
+                </View>
+            </View>
+
+            {/* SEKMELER */}
+            <View style={styles.tabsRow}>
+                <TouchableOpacity
+                    style={[styles.tab, activeTab === 'İstatistikler' && styles.activeTab]}
+                    onPress={() => setActiveTab('İstatistikler')}
+                >
+                    <Text style={[
+                        styles.tabText,
+                        { color: activeTab === 'İstatistikler' ? '#FF7700' : currentSecondaryText },
+                        activeTab === 'İstatistikler' && { fontWeight: 'bold' }
+                    ]}>
+                        İstatistikler
                     </Text>
-                    <Text style={s.profileUsername}>@{user?.username ?? 'kullanici'}</Text>
-                </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={[styles.tab, activeTab === 'Favori Tarifler' && styles.activeTab]}
+                    onPress={() => setActiveTab('Favori Tarifler')}
+                >
+                    <Text style={[
+                        styles.tabText,
+                        { color: activeTab === 'Favori Tarifler' ? '#FF7700' : currentSecondaryText },
+                        activeTab === 'Favori Tarifler' && { fontWeight: 'bold' }
+                    ]}>
+                        Favori Tarifler
+                    </Text>
+                </TouchableOpacity>
             </View>
 
-            {/* Dark Mode Toggle */}
-            <View style={s.section}>
-                <Text style={s.sectionTitle}>GÖRÜNÜM</Text>
-                <View style={s.card}>
-                    <View style={s.row}>
-                        <View style={s.iconBox}>
-                            <Text style={s.icon}>{isDark ? '🌙' : '☀️'}</Text>
+            {/* SEKME İÇERİĞİ */}
+            {activeTab === 'İstatistikler' ? (
+                <View style={styles.tabContent}>
+                    <View style={[styles.card, { backgroundColor: currentCardBg, borderColor: currentBorderColor }]}>
+                        <Text style={[styles.cardTitle, { color: currentTextColor }]}>Haftalık Plan Özeti</Text>
+                        <View style={styles.planSummaryRow}>
+                            <View style={styles.planSummaryItem}>
+                                <Text style={styles.planSummaryLabel}>Planlanan Günler</Text>
+                                <Text style={styles.planSummaryValue}>{plannedDaysCount}/7</Text>
+                            </View>
+                            <View style={styles.planSummaryItem}>
+                                <Text style={styles.planSummaryLabel}>Toplam Öğün</Text>
+                                <Text style={styles.planSummaryValue}>{totalPlanned || 0}</Text>
+                            </View>
                         </View>
-                        <View style={s.textBlock}>
-                            <Text style={s.label}>Karanlık Mod</Text>
-                            <Text style={s.subtitle}>
-                                {isDark ? 'Açık — karanlık tema aktif' : 'Kapalı — aydınlık tema aktif'}
-                            </Text>
+                    </View>
+
+                    <View style={[styles.card, { backgroundColor: currentCardBg, borderColor: currentBorderColor, marginTop: 20 }]}>
+                        <Text style={[styles.cardTitle, { color: currentTextColor, marginBottom: 20 }]}>Ayarlar</Text>
+
+                        <View style={styles.settingRow}>
+                            <View style={styles.settingInfo}>
+                                <View style={[styles.iconBox, { backgroundColor: '#F0F0F0' }]}>
+                                    <Ionicons name="moon" size={20} color="#333" />
+                                </View>
+                                <View>
+                                    <Text style={[styles.settingName, { color: currentTextColor }]}>Tema</Text>
+                                    <Text style={styles.settingDesc}>{isDark ? 'Karanlık Mod' : 'Açık Mod'}</Text>
+                                </View>
+                            </View>
+                            <Switch
+                                value={isDark}
+                                onValueChange={toggleTheme}
+                                trackColor={{ false: "#E0E0E0", true: "#FF7700" }}
+                                thumbColor={"#FFF"}
+                            />
                         </View>
-                        <Switch
-                            value={isDark}
-                            onValueChange={toggleTheme}
-                            trackColor={{ false: theme.border, true: theme.primary }}
-                            thumbColor={Platform.OS === 'android' ? (isDark ? theme.primary : '#f4f3f4') : undefined}
-                            ios_backgroundColor={theme.border}
-                        />
+
+                        <View style={[styles.settingRow, { marginTop: 20 }]}>
+                            <View style={styles.settingInfo}>
+                                <View style={[styles.iconBox, { backgroundColor: 'rgba(255, 119, 0, 0.15)' }]}>
+                                    <Ionicons name="notifications" size={20} color="#FF7700" />
+                                </View>
+                                <View>
+                                    <Text style={[styles.settingName, { color: currentTextColor }]}>Bildirimler</Text>
+                                    <Text style={styles.settingDesc}>{notificationsEnabled ? 'Bildirimler Açık' : 'Bildirimler Kapalı'}</Text>
+                                </View>
+                            </View>
+                            <Switch
+                                value={notificationsEnabled}
+                                onValueChange={() => setNotificationsEnabled(!notificationsEnabled)}
+                                trackColor={{ false: "#E0E0E0", true: "#FF7700" }}
+                                thumbColor={"#FFF"}
+                            />
+                        </View>
                     </View>
                 </View>
-            </View>
+            ) : (
+                <View style={styles.tabContent}>
+                    {/* FAVORİ TARİFLER LİSTESİ YENİ SİSTEM */}
+                    {isLoadingFavs ? (
+                        <ActivityIndicator size="large" color="#FF7700" style={{ marginTop: 40 }} />
+                    ) : favoriteRecipesData && favoriteRecipesData.length > 0 ? (
+                        favoriteRecipesData.map((recipe) => (
+                            <View key={recipe.id} style={[styles.favoriteCard, { backgroundColor: currentCardBg, borderColor: currentBorderColor }]}>
 
-            {/* Logout */}
-            <TouchableOpacity style={s.logoutBtn} onPress={handleLogout} activeOpacity={0.8}>
-                <Text style={s.logoutText}>🚪  Çıkış Yap</Text>
-            </TouchableOpacity>
+                                <Image
+                                    source={{ uri: recipe.image || 'https://via.placeholder.com/150' }}
+                                    style={styles.favoriteImage}
+                                />
 
-            <View style={{ height: SPACING.xl }} />
+                                <View style={styles.favoriteInfo}>
+                                    <Text style={[styles.favoriteTitle, { color: currentTextColor }]} numberOfLines={1}>
+                                        {recipe.name || recipe.title}
+                                    </Text>
+                                    <Text style={styles.favoriteTime}>{recipe.prepTimeMinutes + recipe.cookTimeMinutes} dk</Text>
+                                </View>
+
+                                {/* Tıklanınca favorilerden çıkarma işlemi */}
+                                <TouchableOpacity
+                                    style={styles.removeFavoriteBtn}
+                                    onPress={() => toggleFavorite(recipe.id)}
+                                >
+                                    <Ionicons name="bookmark" size={24} color="#FF7700" />
+                                </TouchableOpacity>
+                            </View>
+                        ))
+                    ) : (
+                        <Text style={{ color: currentSecondaryText, textAlign: 'center', marginTop: 30 }}>
+                            Henüz favori tarifiniz bulunmuyor.
+                        </Text>
+                    )}
+                </View>
+            )}
+
+            <View style={{ height: 40 }} />
         </ScrollView>
     );
 };
 
-const makeStyles = (theme) =>
-    StyleSheet.create({
-        screen: { flex: 1, backgroundColor: theme.background },
-        content: { padding: SPACING.md },
-        header: { marginBottom: SPACING.lg, paddingTop: SPACING.sm },
-        headerTitle: {
-            fontSize: 30,
-            fontWeight: '800',
-            color: theme.text,
-        },
-        // Profile card
-        profileCard: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            backgroundColor: theme.surface,
-            borderRadius: 16,
-            padding: SPACING.md,
-            marginBottom: SPACING.lg,
-            shadowColor: theme.shadow,
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.08,
-            shadowRadius: 6,
-            elevation: 2,
-        },
-        avatarCircle: {
-            width: 52,
-            height: 52,
-            borderRadius: 26,
-            backgroundColor: theme.primary + '22',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginRight: SPACING.sm,
-        },
-        avatarEmoji: { fontSize: 28 },
-        profileInfo: { flex: 1 },
-        profileName: { fontSize: 17, fontWeight: '700', color: theme.text },
-        profileUsername: { fontSize: 13, color: theme.textSecondary, marginTop: 2 },
-        // Section
-        section: { marginBottom: SPACING.lg },
-        sectionTitle: {
-            fontSize: 12,
-            fontWeight: '700',
-            textTransform: 'uppercase',
-            letterSpacing: 0.8,
-            color: theme.textSecondary,
-            marginBottom: SPACING.xs,
-            paddingHorizontal: SPACING.md,
-        },
-        card: {
-            backgroundColor: theme.surface,
-            borderRadius: 16,
-            overflow: 'hidden',
-            shadowColor: theme.shadow,
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.08,
-            shadowRadius: 6,
-            elevation: 2,
-        },
-        row: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingVertical: SPACING.sm + 2,
-            paddingHorizontal: SPACING.md,
-        },
-        iconBox: {
-            width: 40,
-            height: 40,
-            borderRadius: 10,
-            backgroundColor: theme.inputBg,
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginRight: SPACING.sm,
-        },
-        icon: { fontSize: 20 },
-        textBlock: { flex: 1 },
-        label: { fontSize: 15, fontWeight: '600', color: theme.text },
-        subtitle: { fontSize: 12, color: theme.textSecondary, marginTop: 2 },
-        // Logout
-        logoutBtn: {
-            backgroundColor: theme.error + '18',
-            borderRadius: 14,
-            paddingVertical: SPACING.md,
-            alignItems: 'center',
-            borderWidth: 1.5,
-            borderColor: theme.error + '44',
-        },
-        logoutText: {
-            color: theme.error,
-            fontSize: 15,
-            fontWeight: '700',
-        },
-    });
-
 export default SettingsScreen;
+
+const styles = StyleSheet.create({
+    container: { flex: 1, paddingHorizontal: 20, paddingTop: 60 },
+    header: { flexDirection: 'row', alignItems: 'center', marginBottom: 35 },
+    avatar: { width: 90, height: 90, borderRadius: 45 },
+    userInfo: { marginLeft: 20, flex: 1 },
+    userName: { fontSize: 24, fontFamily: 'Inter', fontWeight: 'bold', lineHeight: 28 },
+    userHandle: { fontSize: 14, marginTop: 4 },
+    logoutBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(211, 47, 47, 0.1)', paddingVertical: 10, paddingHorizontal: 15, borderRadius: 12 },
+    logoutText: { color: '#D32F2F', marginLeft: 6, fontWeight: '600', fontSize: 16 },
+    statsRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 30 },
+    statCard: { width: 104, height: 94, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
+    statTitle: { fontSize: 14, fontWeight: '600', marginBottom: 8 },
+    statValue: { fontSize: 24, fontWeight: 'bold' },
+    tabsRow: { flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#E0E0E0', marginBottom: 25 },
+    tab: { paddingVertical: 10, marginRight: 25 },
+    activeTab: { borderBottomWidth: 2, borderBottomColor: '#FF7700' },
+    tabText: { fontSize: 18, fontFamily: 'Inria Sans' },
+    tabContent: { flex: 1 },
+    card: { borderWidth: 1, borderRadius: 12, padding: 20 },
+    cardTitle: { fontSize: 18, fontFamily: 'Inter', fontWeight: 'bold' },
+    planSummaryRow: { flexDirection: 'row', justifyContent: 'space-around', marginTop: 15 },
+    planSummaryItem: { alignItems: 'center' },
+    planSummaryLabel: { color: '#888', fontSize: 14, marginBottom: 8 },
+    planSummaryValue: { color: '#B65311', fontSize: 24, fontWeight: 'bold', fontFamily: 'Inter' },
+    settingRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+    settingInfo: { flexDirection: 'row', alignItems: 'center' },
+    iconBox: { width: 40, height: 40, borderRadius: 20, justifyContent: 'center', alignItems: 'center', marginRight: 15 },
+    settingName: { fontSize: 16, fontWeight: '600' },
+    settingDesc: { fontSize: 13, color: '#888', marginTop: 2 },
+    favoriteCard: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderRadius: 12, padding: 10, marginBottom: 15 },
+    favoriteImage: { width: 60, height: 60, borderRadius: 8 },
+    favoriteInfo: { flex: 1, marginLeft: 15 },
+    favoriteTitle: { fontSize: 16, fontFamily: 'Inter', fontWeight: 'bold', marginBottom: 4 },
+    favoriteTime: { fontSize: 13, color: '#888' },
+    removeFavoriteBtn: { padding: 10 },
+});
