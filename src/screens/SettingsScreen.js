@@ -366,5 +366,11 @@ const styles = StyleSheet.create({
         fontSize: 13,
         color: '#888',
         marginTop: 2
-    }
+    },
+    favoriteCard: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderRadius: 12, padding: 10, marginBottom: 15 },
+    favoriteImage: { width: 60, height: 60, borderRadius: 8 },
+    favoriteInfo: { flex: 1, marginLeft: 15 },
+    favoriteTitle: { fontSize: 16, fontFamily: 'Inter', fontWeight: 'bold', marginBottom: 4 },
+    favoriteTime: { fontSize: 13, color: '#888' },
+    removeFavoriteBtn: { padding: 10 },
 });
